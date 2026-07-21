@@ -31,7 +31,7 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
       }
       
       try {
-        const res = await fetch("/api/auth/session");
+        const res = await fetch(`/api/auth/session?t=${Date.now()}`, { cache: "no-store" });
         if (res.ok) {
           const data = await res.json();
           if (data.session) {
@@ -42,7 +42,8 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
         } else {
           setSession({ data: null, status: "unauthenticated" });
         }
-      } catch {
+      } catch (err) {
+        console.error("Auth fetch error:", err);
         setSession({ data: null, status: "unauthenticated" });
       }
     }
