@@ -1,0 +1,94 @@
+import { getServerSession } from "@/lib/auth";
+import { NextResponse } from "next/server";
+import prisma from "@/lib/prisma";
+
+export async function POST(req: Request) {
+  try {
+    const session = await getServerSession();
+
+    if (!session || session.user.role !== "CUSTOMER") {
+      return NextResponse.json({ error: "Yetkisiz erişim" }, { status: 403 });
+    }
+
+    const body = await req.json();
+    const { token } = body;
+
+    if (!token) return NextResponse.json({ error: "Token gerekli" }, { status: 400 });
+
+    const qrToken = await prisma.qrToken.findUnique({ where: { token } });
+
+    if (!qrToken) return NextResponse.json({ error: "Geçersiz QR Kod" }, { status: 404 });
+    if (qrToken.isUsed) return NextResponse.json({ error: "Bu QR Kod zaten kullanılmış" }, { status: 400 });
+    if (qrToken.expiresAt < new Date()) return NextResponse.json({ error: "Bu QR Kodun süresi dolmuş" }, { status: 400 });
+    if (qrToken.type !== "EARN") return NextResponse.json({ error: "Bu QR Kod puan kazanma kodu değil!" }, { status: 400 });
+
+    const settings = await prisma.businessSettings.findFirst({
+      where: { businessId: qrToken.businessId }
+    });
+    
+    const requiredCoffees = settings ? settings.requiredCoffees : 10;
+    const requiredFoods = settings ? settings.requiredFoods : 10;
+
+    let wallet = await prisma.wallet.findUnique({ where: { userId: session.user.id } });
+    if (!wallet) {
+      wallet = await prisma.wallet.create({ data: { userId: session.user.id, businessId: qrToken.businessId, beans: 0, rewards: 0, foodPoints: 0, foodRewards: 0 } });
+    }
+
+    const beansEarned = qrToken.beans || 1;
+    let newBeans = wallet.beans;
+    let newRewards = wallet.rewards;
+    let newFoodPoints = wallet.foodPoints;
+    let newFoodRewards = wallet.foodRewards;
+
+    if (qrToken.productType === "FOOD") {
+      newFoodPoints += beansEarned;
+      while (newFoodPoints >= requiredFoods) {
+        newFoodPoints -= requiredFoods;
+        newFoodRewards += 1;
+      }
+    } else {
+      newBeans += beansEarned;
+      while (newBeans >= requiredCoffees) {
+        newBeans -= requiredCoffees;
+        newRewards += 1;
+      }
+    }
+
+    await prisma.$transaction([
+      prisma.qrToken.update({
+        where: { id: qrToken.id },
+        data: { isUsed: true, userId: session.user.id }
+      }),
+      prisma.wallet.update({
+        where: { id: wallet.id },
+        data: { 
+          beans: newBeans, 
+          rewards: newRewards,
+          foodPoints: newFoodPoints,
+          foodRewards: newFoodRewards
+        }
+      }),
+      prisma.transaction.create({
+        data: {
+          userId: session.user.id,
+          businessId: qrToken.businessId,
+          type: qrToken.productType === "FOOD" ? "EARN_FOOD" : "EARN_BEAN",
+          amount: beansEarned
+        }
+      })
+    ]);
+
+    const pointName = qrToken.productType === "FOOD" ? "yemek puanı" : "kahve çekirdeği";
+
+    return NextResponse.json({ 
+      success: true, 
+      message: `${beansEarned} ${pointName} başarıyla eklendi!`,
+      newBeans,
+      newRewards,
+      newFoodPoints,
+      newFoodRewards
+    });
+  } catch (error) {
+    return NextResponse.json({ error: "Sunucu hatası" }, { status: 500 });
+  }
+}
