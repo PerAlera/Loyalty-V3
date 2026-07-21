@@ -8,7 +8,7 @@ const MobilePreview = ({ logo, mascot, primaryColor }: {logo: any, mascot: any, 
   return (
     <div className="mobile-mockup">
       <div className="mobile-notch"></div>
-      <div className="mobile-screen" style={{ '--primary': primaryColor }}>
+      <div className="mobile-screen" style={{ '--primary': primaryColor } as React.CSSProperties}>
         
         {/* Header */}
         <div className="mp-header">
