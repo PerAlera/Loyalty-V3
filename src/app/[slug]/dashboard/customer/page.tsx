@@ -27,7 +27,7 @@ export default function CustomerHome() {
   const [successMessage, setSuccessMessage] = useState("");
   const [redeemToken, setRedeemToken] = useState<string | null>(null);
   const [redeemType, setRedeemType] = useState<"COFFEE" | "FOOD" | null>(null);
-  const [rotation, setRotation] = useState(0);
+  const [activeTab, setActiveTab] = useState<"COFFEE" | "FOOD">("COFFEE");
 
   // Polling ref
   const pollInterval = useRef<NodeJS.Timeout | null>(null);
@@ -167,16 +167,18 @@ export default function CustomerHome() {
 
   const renderCoffeeFace = () => (
     <div style={{
-      width: "100%", height: "100%", display: "flex", flexDirection: "column",
-      alignItems: "center", justifyContent: "flex-start", padding: "0 0.5rem"
+      width: "100%", display: "flex", flexDirection: "column",
+      alignItems: "center", justifyContent: "flex-start", padding: "0"
     }}>
-      <div style={{ width: "240px", height: "280px", position: "relative", marginBottom: "1rem", display: "flex", justifyContent: "center", alignItems: "center" }}>
-        <Image src={business.coffeeMascot || "/kahve.svg"} alt="Kahve" width={240} height={280} style={{ objectFit: "contain" }} priority />
+      <div style={{ width: "240px", height: "240px", position: "relative", marginBottom: "1rem", display: "flex", justifyContent: "center", alignItems: "center" }}>
+        <Image src={business.coffeeMascot || "/kahve.svg"} alt="Kahve" width={240} height={240} style={{ objectFit: "contain" }} priority />
       </div>
       <div style={{ width: "100%" }}>
-        <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: "0.5rem" }}>
-          <span style={{ fontSize: "0.875rem", fontWeight: "bold", color: "var(--text-secondary)" }}>Kahve Çekirdekleri</span>
-          <span style={{ fontSize: "0.875rem", color: "var(--primary)" }}>{currentBeans} / {requiredCoffees}</span>
+        <div style={{ display: "flex", justifyContent: "center", alignItems: "center", marginBottom: "0.5rem" }}>
+          <span style={{ fontSize: "1rem", fontWeight: "bold", color: "var(--text-secondary)" }}>Kahve Çekirdekleri</span>
+        </div>
+        <div style={{ display: "flex", justifyContent: "center", alignItems: "center", marginBottom: "1.5rem" }}>
+          <span style={{ fontSize: "1.5rem", fontWeight: "bold", color: "var(--primary)" }}>{currentBeans} <span style={{fontSize: "1rem", color: "var(--text-secondary)"}}>/ {requiredCoffees}</span></span>
         </div>
         <div style={{ display: "flex", justifyContent: "space-between", position: "relative", alignItems: "center" }}>
           <div style={{ position: "absolute", top: "50%", left: "0", right: "0", height: "2px", backgroundColor: "#000", zIndex: 0, transform: "translateY(-50%)" }}></div>
@@ -203,16 +205,18 @@ export default function CustomerHome() {
 
   const renderFoodFace = () => (
     <div style={{
-      width: "100%", height: "100%", display: "flex", flexDirection: "column",
-      alignItems: "center", justifyContent: "flex-start", padding: "0 0.5rem"
+      width: "100%", display: "flex", flexDirection: "column",
+      alignItems: "center", justifyContent: "flex-start", padding: "0"
     }}>
-      <div style={{ width: "240px", height: "280px", position: "relative", marginBottom: "1rem", display: "flex", justifyContent: "center", alignItems: "center" }}>
-        <Image src={business.foodMascot || "/yemek.svg"} alt="Yemek" width={240} height={280} style={{ objectFit: "contain" }} priority />
+      <div style={{ width: "240px", height: "240px", position: "relative", marginBottom: "1rem", display: "flex", justifyContent: "center", alignItems: "center" }}>
+        <Image src={business.foodMascot || "/yemek.svg"} alt="Yemek" width={240} height={240} style={{ objectFit: "contain" }} priority />
       </div>
       <div style={{ width: "100%" }}>
-        <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: "0.5rem" }}>
-          <span style={{ fontSize: "0.875rem", fontWeight: "bold", color: "var(--text-secondary)" }}>Yemek Puanları</span>
-          <span style={{ fontSize: "0.875rem", color: "#F59E0B" }}>{currentFood} / {requiredFoods}</span>
+        <div style={{ display: "flex", justifyContent: "center", alignItems: "center", marginBottom: "0.5rem" }}>
+          <span style={{ fontSize: "1rem", fontWeight: "bold", color: "var(--text-secondary)" }}>Yemek Puanları</span>
+        </div>
+        <div style={{ display: "flex", justifyContent: "center", alignItems: "center", marginBottom: "1.5rem" }}>
+          <span style={{ fontSize: "1.5rem", fontWeight: "bold", color: "#F59E0B" }}>{currentFood} <span style={{fontSize: "1rem", color: "var(--text-secondary)"}}>/ {requiredFoods}</span></span>
         </div>
         <div style={{ display: "flex", justifyContent: "space-between", position: "relative", alignItems: "center" }}>
           <div style={{ position: "absolute", top: "50%", left: "0", right: "0", height: "2px", backgroundColor: "#000", zIndex: 0, transform: "translateY(-50%)" }}></div>
@@ -267,7 +271,7 @@ export default function CustomerHome() {
           color: "var(--text-primary)",
           flex: 1
         }}>
-          Hoş Geldin, {session?.user?.name}
+          Hoş Geldin, {session?.user?.name?.split(' ')[0] || session?.user?.name}
         </h1>
 
         <Link href="/dashboard/customer/profile" style={{ color: "var(--text-primary)" }}>
@@ -278,43 +282,49 @@ export default function CustomerHome() {
       {/* İllüstrasyon ve Butonlar */}
       <div style={{ flex: 1, display: "flex", flexDirection: "column", alignItems: "center", justifyContent: "center" }}>
 
-        {/* 3D KÜP (SONSUZ DÖNGÜ) */}
-        <div style={{ display: "flex", alignItems: "center", justifyContent: "center", width: "100%", maxWidth: "380px", margin: "0 auto 2rem auto", gap: "0.25rem" }}>
-          <button onClick={() => setRotation(r => r + 90)} style={{ background: "none", border: "none", cursor: "pointer", padding: "0.25rem" }}>
-            <span style={{ fontSize: "2rem", color: "var(--primary)" }}>{"<"}</span>
+        {/* Toggle Buttons */}
+        <div style={{ display: "flex", justifyContent: "center", gap: "1.5rem", marginBottom: "1.5rem" }}>
+          <button 
+            onClick={() => setActiveTab("COFFEE")}
+            style={{ 
+              width: "60px", height: "60px", borderRadius: "50%", 
+              display: "flex", alignItems: "center", justifyContent: "center",
+              border: activeTab === "COFFEE" ? "none" : "2px solid var(--primary)",
+              backgroundColor: activeTab === "COFFEE" ? "var(--primary)" : "var(--bg-primary)",
+              color: activeTab === "COFFEE" ? "white" : "var(--primary)",
+              boxShadow: activeTab === "COFFEE" ? "0 0 0 6px rgba(101, 67, 33, 0.15)" : "none",
+              cursor: "pointer", transition: "all 0.3s ease"
+            }}
+          >
+            <Coffee size={28} />
           </button>
-
-          <div style={{ perspective: "1000px", width: "260px", height: "360px", position: "relative" }}>
-            <div style={{
-              position: "absolute",
-              width: "100%",
-              height: "100%",
-              transition: "transform 0.8s cubic-bezier(0.4, 0, 0.2, 1)",
-              transformStyle: "preserve-3d",
-              transform: `translateZ(-130px) rotateY(${rotation}deg)`
-            }}>
-              {/* Ön Yüz (0 deg) - Kahve */}
-              <div style={{ position: "absolute", width: "260px", height: "360px", backfaceVisibility: "hidden", transform: "rotateY(0deg) translateZ(130px)", backgroundColor: "var(--bg-primary)" }}>
-                {renderCoffeeFace()}
-              </div>
-              {/* Sağ Yüz (90 deg) - Yemek */}
-              <div style={{ position: "absolute", width: "260px", height: "360px", backfaceVisibility: "hidden", transform: "rotateY(90deg) translateZ(130px)", backgroundColor: "var(--bg-primary)" }}>
-                {renderFoodFace()}
-              </div>
-              {/* Arka Yüz (180 deg) - Kahve */}
-              <div style={{ position: "absolute", width: "260px", height: "360px", backfaceVisibility: "hidden", transform: "rotateY(180deg) translateZ(130px)", backgroundColor: "var(--bg-primary)" }}>
-                {renderCoffeeFace()}
-              </div>
-              {/* Sol Yüz (-90 deg) - Yemek */}
-              <div style={{ position: "absolute", width: "260px", height: "360px", backfaceVisibility: "hidden", transform: "rotateY(-90deg) translateZ(130px)", backgroundColor: "var(--bg-primary)" }}>
-                {renderFoodFace()}
-              </div>
-            </div>
-          </div>
-
-          <button onClick={() => setRotation(r => r - 90)} style={{ background: "none", border: "none", cursor: "pointer", padding: "0.25rem" }}>
-            <span style={{ fontSize: "2rem", color: "var(--primary)" }}>{">"}</span>
+          
+          <button 
+            onClick={() => setActiveTab("FOOD")}
+            style={{ 
+              width: "60px", height: "60px", borderRadius: "50%", 
+              display: "flex", alignItems: "center", justifyContent: "center",
+              border: activeTab === "FOOD" ? "none" : "2px solid #F59E0B",
+              backgroundColor: activeTab === "FOOD" ? "#F59E0B" : "var(--bg-primary)",
+              color: activeTab === "FOOD" ? "white" : "#F59E0B",
+              boxShadow: activeTab === "FOOD" ? "0 0 0 6px rgba(245, 158, 11, 0.15)" : "none",
+              cursor: "pointer", transition: "all 0.3s ease"
+            }}
+          >
+            <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+              <path d="M12 3a9 9 0 0 0-9 9h18a9 9 0 0 0-9-9Z"></path>
+              <path d="M3 12h18"></path>
+              <path d="M5 16h14"></path>
+              <path d="M12 3v9"></path>
+              <path d="M7.5 4.5 9 12"></path>
+              <path d="M16.5 4.5 15 12"></path>
+            </svg>
           </button>
+        </div>
+
+        {/* Mascot ve Puanlar */}
+        <div style={{ width: "100%", maxWidth: "300px", margin: "0 auto 2rem auto" }} className="fade-in">
+           {activeTab === "COFFEE" ? renderCoffeeFace() : renderFoodFace()}
         </div>
 
         {/* Butonlar */}
