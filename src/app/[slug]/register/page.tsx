@@ -7,11 +7,13 @@ import Image from "next/image";
 import styles from "../login/login.module.css";
 
 import { createClient } from "@/lib/supabase-client";
+import { useTenant } from "@/components/TenantProvider";
 
 export default function RegisterPage(props: { params: Promise<{ slug: string }> }) {
   const params = use(props.params);
   const router = useRouter();
   const supabase = createClient();
+  const business = useTenant();
   const [formData, setFormData] = useState({
     name: "",
     surname: "",
@@ -71,10 +73,10 @@ export default function RegisterPage(props: { params: Promise<{ slug: string }> 
     <div className={styles.authContainer}>
       <div className={`fade-in ${styles.authCard}`}>
         <div style={{ width: "120px", height: "120px", position: "relative", margin: "0 auto 1rem auto" }}>
-          <Image src="/logo.svg" alt="Jay's Cafe Logo" fill style={{ objectFit: "contain" }} priority />
+          <Image src={business.logo || "/logo.svg"} alt={`${business.name} Logo`} fill style={{ objectFit: "contain" }} priority />
         </div>
         <h1 className={styles.authTitle}>Kayıt Ol</h1>
-        <p className={styles.authSubtitle}>Yeni bir Jay's Cafe hesabı oluşturun.</p>
+        <p className={styles.authSubtitle}>Yeni bir {business.name} hesabı oluşturun.</p>
 
         {error && <div className={styles.errorText}>{error}</div>}
 
