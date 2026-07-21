@@ -3,6 +3,8 @@ import { notFound } from "next/navigation";
 import Link from "next/link";
 import { ArrowLeft, Edit2, Users, Target, Activity } from "lucide-react";
 
+export const dynamic = "force-dynamic";
+
 export default async function BusinessDetailPage({ params }: { params: Promise<{ id: string }> }) {
   const resolvedParams = await params;
   const businessId = resolvedParams.id;
