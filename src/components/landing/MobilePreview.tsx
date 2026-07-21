@@ -13,7 +13,7 @@ const MobilePreview = ({ logo, mascot, primaryColor }: {logo: any, mascot: any, 
         {/* Header */}
         <div className="mp-header">
           <div className="mp-logo">
-            <img src={logo} alt="Brand Logo" />
+            {logo ? <img src={logo} alt="Brand Logo" /> : <div style={{width: '40px', height: '40px', borderRadius: '50%', backgroundColor: '#eee', display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: '10px', color: '#999'}}>Logo</div>}
           </div>
           <div className="mp-greeting">
             Hoş Geldin, Alperen
