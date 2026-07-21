@@ -19,8 +19,7 @@ export default function PanelLoginPage() {
     setError("");
 
     // Super admin için e-postayı telefon numarasıyla birleştiriyoruz
-    const baseDomain = process.env.NEXT_PUBLIC_BASE_DOMAIN || 'peralera.com';
-    const email = `${phone}@${baseDomain}`;
+    const email = `${phone}@peralera.com`;
 
     const { error: signInError } = await supabase.auth.signInWithPassword({
       email,

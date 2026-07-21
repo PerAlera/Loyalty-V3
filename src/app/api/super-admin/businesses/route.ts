@@ -58,8 +58,7 @@ export async function POST(req: Request) {
     });
 
     // 3. Supabase Admin API ile ADMIN kullanıcısını oluştur
-    const baseDomain = process.env.NEXT_PUBLIC_BASE_DOMAIN || 'peralera.com';
-    const email = `${adminPhone}@${slug}.${baseDomain}`;
+    const email = `${adminPhone}@${slug}.peralera.com`;
     
     const { data: authData, error: authError } = await supabaseAdmin.auth.admin.createUser({
       email,

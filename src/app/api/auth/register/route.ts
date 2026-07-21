@@ -39,8 +39,7 @@ export async function POST(req: Request) {
     }
 
     // Create user in Supabase Auth
-    const baseDomain = process.env.NEXT_PUBLIC_BASE_DOMAIN || 'peralera.com';
-    const email = `${phone}@${slug}.${baseDomain}`;
+    const email = `${phone}@${slug}.peralera.com`;
     const { data: authData, error: authError } = await supabaseAdmin.auth.admin.createUser({
       email,
       password,
