@@ -68,7 +68,8 @@ export async function POST(req: Request) {
       return NextResponse.json({ error: "Bu telefon numarası zaten sistemde kayıtlı." }, { status: 400 });
     }
 
-    const email = `${phone}@${business.slug}.peralera.com`;
+    const baseDomain = process.env.NEXT_PUBLIC_BASE_DOMAIN || 'peralera.com';
+    const email = `${phone}@${business.slug}.${baseDomain}`;
 
     const { data: authData, error: authError } = await supabaseAdmin.auth.admin.createUser({
       email,
