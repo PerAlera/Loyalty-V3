@@ -22,7 +22,7 @@ const Header = () => {
       </nav>
       <div className="header-actions">
         <Link href="/panel/login" className="btn btn-ghost" style={{ marginRight: "1rem" }}>Giriş Yap</Link>
-        <Link href="/home/demo" className="btn btn-primary">Demo Al &rarr;</Link>
+        <Link href="/demo" className="btn btn-primary">Demo Al &rarr;</Link>
       </div>
     </header>
   );

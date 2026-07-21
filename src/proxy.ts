@@ -61,6 +61,9 @@ export default function middleware(req: NextRequest) {
 
   // Kök alan adı (Ana tanıtım sitesi)
   if (cleanHostname === baseDomain) {
+    if (url.pathname.startsWith('/panel')) {
+      return NextResponse.next();
+    }
     return NextResponse.rewrite(new URL(`/home${path}`, req.url));
   }
 

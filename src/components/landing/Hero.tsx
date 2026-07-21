@@ -24,7 +24,7 @@ const Hero = () => {
         </ul>
 
         <div className="hero-actions">
-          <Link href="/home/demo" className="btn btn-primary">Ücretsiz Demo Al &rarr;</Link>
+          <Link href="/demo" className="btn btn-primary">Ücretsiz Demo Al &rarr;</Link>
           <a href="#how-it-works" className="btn btn-ghost">Nasıl Çalışır? &rsaquo;</a>
         </div>
 
