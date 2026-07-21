@@ -216,16 +216,33 @@ export default function EditBusinessPage({ params }: { params: Promise<{ id: str
 
           <div className="form-group">
             <label className="form-label">Kahve Ödül Maskotu</label>
+            <div style={{ display: "flex", gap: "1rem", marginBottom: "1rem" }}>
+              {["/1.svg", "/2.svg"].map(url => (
+                <div 
+                  key={url} 
+                  onClick={() => setFormData({ ...formData, coffeeMascot: url })}
+                  style={{ 
+                    width: "80px", height: "80px", 
+                    border: formData.coffeeMascot === url ? "2px solid var(--primary)" : "1px solid var(--border-color)", 
+                    borderRadius: "8px", overflow: "hidden", cursor: "pointer", padding: "0.5rem",
+                    backgroundColor: formData.coffeeMascot === url ? "rgba(244, 63, 94, 0.05)" : "transparent"
+                  }}
+                  title="Hazır Maskot Seç"
+                >
+                  <img src={url} alt="Hazır Maskot" style={{ width: "100%", height: "100%", objectFit: "contain" }} />
+                </div>
+              ))}
+            </div>
             <div style={{ display: "flex", alignItems: "center", gap: "1rem" }}>
-              {formData.coffeeMascot && (
+              {formData.coffeeMascot && !["/1.svg", "/2.svg"].includes(formData.coffeeMascot) && (
                 <div style={{ width: "60px", height: "60px", borderRadius: "8px", overflow: "hidden", border: "1px solid var(--border-color)" }}>
-                  <img src={formData.coffeeMascot} alt="Coffee Mascot" style={{ width: "100%", height: "100%", objectFit: "cover" }} />
+                  <img src={formData.coffeeMascot} alt="Özel Maskot" style={{ width: "100%", height: "100%", objectFit: "cover" }} />
                 </div>
               )}
               <div style={{ flex: 1 }}>
                 <label className="btn-secondary" style={{ display: "inline-flex", alignItems: "center", gap: "0.5rem", cursor: "pointer" }}>
-                  <UploadCloud size={18} /> {uploading.coffeeMascot ? "Yükleniyor..." : "Maskot Seç ve Yükle"}
-                  <input type="file" accept=".svg, image/svg+xml" style={{ display: "none" }} onChange={(e) => handleUpload(e, "coffeeMascot")} disabled={uploading.coffeeMascot} />
+                  <UploadCloud size={18} /> {uploading.coffeeMascot ? "Yükleniyor..." : "Kendi Maskotunu Yükle"}
+                  <input type="file" accept=".svg, image/svg+xml, image/png, image/jpeg" style={{ display: "none" }} onChange={(e) => handleUpload(e, "coffeeMascot")} disabled={uploading.coffeeMascot} />
                 </label>
               </div>
             </div>
@@ -233,16 +250,33 @@ export default function EditBusinessPage({ params }: { params: Promise<{ id: str
 
           <div className="form-group">
             <label className="form-label">Yemek Ödül Maskotu</label>
+            <div style={{ display: "flex", gap: "1rem", marginBottom: "1rem" }}>
+              {["/1.svg", "/2.svg"].map(url => (
+                <div 
+                  key={url} 
+                  onClick={() => setFormData({ ...formData, foodMascot: url })}
+                  style={{ 
+                    width: "80px", height: "80px", 
+                    border: formData.foodMascot === url ? "2px solid var(--primary)" : "1px solid var(--border-color)", 
+                    borderRadius: "8px", overflow: "hidden", cursor: "pointer", padding: "0.5rem",
+                    backgroundColor: formData.foodMascot === url ? "rgba(244, 63, 94, 0.05)" : "transparent"
+                  }}
+                  title="Hazır Maskot Seç"
+                >
+                  <img src={url} alt="Hazır Maskot" style={{ width: "100%", height: "100%", objectFit: "contain" }} />
+                </div>
+              ))}
+            </div>
             <div style={{ display: "flex", alignItems: "center", gap: "1rem" }}>
-              {formData.foodMascot && (
+              {formData.foodMascot && !["/1.svg", "/2.svg"].includes(formData.foodMascot) && (
                 <div style={{ width: "60px", height: "60px", borderRadius: "8px", overflow: "hidden", border: "1px solid var(--border-color)" }}>
-                  <img src={formData.foodMascot} alt="Food Mascot" style={{ width: "100%", height: "100%", objectFit: "cover" }} />
+                  <img src={formData.foodMascot} alt="Özel Maskot" style={{ width: "100%", height: "100%", objectFit: "cover" }} />
                 </div>
               )}
               <div style={{ flex: 1 }}>
                 <label className="btn-secondary" style={{ display: "inline-flex", alignItems: "center", gap: "0.5rem", cursor: "pointer" }}>
-                  <UploadCloud size={18} /> {uploading.foodMascot ? "Yükleniyor..." : "Maskot Seç ve Yükle"}
-                  <input type="file" accept=".svg, image/svg+xml" style={{ display: "none" }} onChange={(e) => handleUpload(e, "foodMascot")} disabled={uploading.foodMascot} />
+                  <UploadCloud size={18} /> {uploading.foodMascot ? "Yükleniyor..." : "Kendi Maskotunu Yükle"}
+                  <input type="file" accept=".svg, image/svg+xml, image/png, image/jpeg" style={{ display: "none" }} onChange={(e) => handleUpload(e, "foodMascot")} disabled={uploading.foodMascot} />
                 </label>
               </div>
             </div>
