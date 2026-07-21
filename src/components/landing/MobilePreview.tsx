@@ -1,7 +1,7 @@
 import React from 'react';
 
 
-const MobilePreview = ({ logo, mascot, primaryColor }) => {
+const MobilePreview = ({ logo, mascot, primaryColor }: {logo: any, mascot: any, primaryColor: any}) => {
   // We can calculate lighter shades of the primary color for the secondary buttons
   // But for simplicity in this demo, we will use opacity or pre-calculated CSS filters
   
