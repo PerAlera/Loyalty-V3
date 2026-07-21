@@ -20,13 +20,14 @@ model Business {
   announcements Announcement[]
   createdAt     DateTime       @default(now())
   updatedAt     DateTime       @updatedAt
+  isActive      Boolean        @default(true)
 }
 
 model User {
   id           String        @id // Maps to Supabase auth.users.id (UUID)
   businessId   String
   business     Business      @relation(fields: [businessId], references: [id], onDelete: Cascade)
-  phone        String        @unique
+  phone        String
   name         String
   surname      String
   role         Role          @default(CUSTOMER)
@@ -42,6 +43,8 @@ model User {
   wallets      Wallet[]
   transactions Transaction[]
   qrTokens     QrToken[]
+
+  @@unique([phone, businessId])
 }
 
 enum Role {

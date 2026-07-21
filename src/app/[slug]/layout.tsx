@@ -9,7 +9,7 @@ export async function generateMetadata({ params }: { params: Promise<{ slug: str
     where: { slug },
   });
 
-  if (!business) return { title: "Not Found" };
+  if (!business || !business.isActive) return { title: "Not Found" };
 
   return {
     title: business.name,
@@ -28,7 +28,7 @@ export default async function TenantLayout({
     where: { slug },
   });
 
-  if (!business) {
+  if (!business || !business.isActive) {
     notFound();
   }
 

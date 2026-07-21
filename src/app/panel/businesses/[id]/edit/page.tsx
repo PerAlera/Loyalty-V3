@@ -3,7 +3,7 @@
 import { useState, useEffect, use } from "react";
 import { useRouter } from "next/navigation";
 import Link from "next/link";
-import { ArrowLeft, Save, Store, UploadCloud } from "lucide-react";
+import { ArrowLeft, Save, Store, UploadCloud, Trash2 } from "lucide-react";
 
 export default function EditBusinessPage({ params }: { params: Promise<{ id: string }> }) {
   const router = useRouter();
@@ -101,6 +101,32 @@ export default function EditBusinessPage({ params }: { params: Promise<{ id: str
     }
 
     setSaving(false);
+  };
+
+  const handleDelete = async () => {
+    if (!window.confirm("Bu işletmeyi kapatmak istediğinize emin misiniz? İşletmenin bağlantısı kalıcı olarak ulaşılamaz hale gelecektir!")) {
+      return;
+    }
+
+    setSaving(true);
+    try {
+      const res = await fetch(`/api/super-admin/businesses/${businessId}`, {
+        method: "DELETE"
+      });
+
+      if (res.ok) {
+        alert("İşletme başarıyla kapatıldı.");
+        router.push("/panel");
+      } else {
+        const data = await res.json();
+        alert(data.error || "Kapatma sırasında bir hata oluştu.");
+        setSaving(false);
+      }
+    } catch (err) {
+      console.error(err);
+      alert("Bağlantı hatası.");
+      setSaving(false);
+    }
   };
 
   if (loading) {
@@ -226,6 +252,33 @@ export default function EditBusinessPage({ params }: { params: Promise<{ id: str
             <Save size={20} /> {saving ? "Kaydediliyor..." : "Tüm Değişiklikleri Kaydet"}
           </button>
         </form>
+      </div>
+
+      <div className="surface-card" style={{ marginTop: "2rem", border: "1px solid rgba(220, 38, 38, 0.2)", backgroundColor: "rgba(220, 38, 38, 0.02)" }}>
+        <h2 style={{ fontSize: "1.125rem", margin: "0 0 1rem 0", color: "#dc2626" }}>Tehlikeli Bölge</h2>
+        <p style={{ fontSize: "0.875rem", color: "var(--text-secondary)", marginBottom: "1.5rem" }}>
+          Bu işletmeyi kapattığınızda artık bağlantısına ulaşılamayacak ve sistemde aktif olarak görünmeyecektir. Bu işlem geri alınamaz (sadece veritabanında geçmiş kayıt olarak tutulur).
+        </p>
+        <button 
+          type="button" 
+          onClick={handleDelete} 
+          disabled={saving}
+          style={{ 
+            display: "flex", 
+            justifyContent: "center", 
+            alignItems: "center", 
+            gap: "0.5rem", 
+            backgroundColor: "#dc2626", 
+            color: "white", 
+            border: "none", 
+            padding: "0.75rem 1.5rem", 
+            borderRadius: "0.5rem", 
+            cursor: saving ? "not-allowed" : "pointer",
+            fontWeight: "bold"
+          }}
+        >
+          <Trash2 size={20} /> İşletmeyi Kapat
+        </button>
       </div>
     </div>
   );

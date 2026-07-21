@@ -30,8 +30,8 @@ export async function POST(req: Request) {
     }
 
     // Check if phone exists for this specific business
-    const existingUser = await prisma.user.findFirst({
-      where: { phone, businessId: business.id }
+    const existingUser = await prisma.user.findUnique({
+      where: { phone_businessId: { phone, businessId: business.id } }
     });
 
     if (existingUser) {

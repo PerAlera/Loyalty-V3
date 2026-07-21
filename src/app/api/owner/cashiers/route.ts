@@ -63,7 +63,7 @@ export async function POST(req: Request) {
     const business = await prisma.business.findUnique({ where: { id: session.user.businessId as string } });
     if (!business) return NextResponse.json({ error: "Mağaza bulunamadı" }, { status: 404 });
 
-    const existingUser = await prisma.user.findUnique({ where: { phone } });
+    const existingUser = await prisma.user.findUnique({ where: { phone_businessId: { phone, businessId: business.id } } });
     if (existingUser) {
       return NextResponse.json({ error: "Bu telefon numarası zaten sistemde kayıtlı." }, { status: 400 });
     }

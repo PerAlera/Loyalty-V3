@@ -75,3 +75,40 @@ export async function PUT(req: Request, { params }: { params: Promise<{ id: stri
     return NextResponse.json({ error: "Sunucu hatası" }, { status: 500 });
   }
 }
+
+export async function DELETE(req: Request, { params }: { params: Promise<{ id: string }> }) {
+  try {
+    const session = await getServerSession();
+
+    if (!session || session.user.role !== "SUPER_ADMIN") {
+      return NextResponse.json({ error: "Yetkisiz erişim" }, { status: 403 });
+    }
+
+    const resolvedParams = await params;
+    const businessId = resolvedParams.id;
+
+    const business = await prisma.business.findUnique({
+      where: { id: businessId }
+    });
+
+    if (!business) {
+      return NextResponse.json({ error: "İşletme bulunamadı" }, { status: 404 });
+    }
+
+    // Soft Delete: isActive = false, and modify slug to free it up
+    const deletedSlug = `${business.slug}-deleted-${Date.now()}`;
+
+    await prisma.business.update({
+      where: { id: businessId },
+      data: {
+        isActive: false,
+        slug: deletedSlug
+      }
+    });
+
+    return NextResponse.json({ success: true });
+  } catch (error) {
+    console.error("Delete Business Error:", error);
+    return NextResponse.json({ error: "Sunucu hatası" }, { status: 500 });
+  }
+}
