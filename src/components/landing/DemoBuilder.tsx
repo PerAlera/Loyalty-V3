@@ -71,8 +71,17 @@ const DemoBuilder = () => {
                 }}
                 onClick={() => logoInputRef.current?.click()}
               >
-                <span style={{ fontSize: '2rem', marginBottom: '0.5rem' }}>📁</span>
-                <span style={{ fontSize: '0.875rem', fontWeight: '500' }}>{logo ? "Logoyu Değiştir" : "Logo Yükle"}</span>
+                {logo ? (
+                  <>
+                    <img src={logo} alt="Uploaded Logo" style={{ maxHeight: '60px', marginBottom: '0.5rem' }} />
+                    <span style={{ fontSize: '0.875rem', fontWeight: '500' }}>Değiştir</span>
+                  </>
+                ) : (
+                  <>
+                    <span style={{ fontSize: '2rem', marginBottom: '0.5rem' }}>📁</span>
+                    <span style={{ fontSize: '0.875rem', fontWeight: '500' }}>Logo Yükle</span>
+                  </>
+                )}
               </div>
             </div>
             {logo && (
@@ -109,8 +118,17 @@ const DemoBuilder = () => {
                   style={{ display: 'none' }} 
                   onChange={handleMascotUpload}
                 />
-                <span style={{ fontSize: '1.5rem', marginBottom: '0.25rem' }}>➕</span>
-                <span style={{ fontSize: '0.875rem', fontWeight: '500', textAlign: 'center' }}>Kendi Maskotunu<br/>Yükle</span>
+                {mascot.startsWith('blob:') ? (
+                  <>
+                    <img src={mascot} alt="Uploaded Mascot" style={{ maxHeight: '50px', marginBottom: '0.25rem' }} />
+                    <span style={{ fontSize: '0.75rem', fontWeight: '500', textAlign: 'center' }}>Değiştir</span>
+                  </>
+                ) : (
+                  <>
+                    <span style={{ fontSize: '1.5rem', marginBottom: '0.25rem' }}>➕</span>
+                    <span style={{ fontSize: '0.875rem', fontWeight: '500', textAlign: 'center' }}>Kendi Maskotunu<br/>Yükle</span>
+                  </>
+                )}
               </div>
             </div>
           </div>
