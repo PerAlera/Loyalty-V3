@@ -10,12 +10,17 @@ export const config = {
      * - _next/image (image optimization files)
      * - favicon.ico (favicon file)
      */
-    '/((?!api|_next/static|_next/image|favicon.ico|.*\\.(?:svg|png|jpg|jpeg|gif|webp)$).*)',
+    '/((?!api|_next/static|_next/image|favicon.ico).*)',
   ],
 };
 
 export default function middleware(req: NextRequest) {
   const url = req.nextUrl;
+
+  // Statik dosyaları (görseller vb.) muaf tut
+  if (url.pathname.match(/\.(svg|png|jpg|jpeg|gif|webp|ico)$/)) {
+    return NextResponse.next();
+  }
 
   // Base domain'i environment variable'dan al (varsayılan: peralera.com)
   const baseDomainEnv = process.env.NEXT_PUBLIC_BASE_DOMAIN || 'peralera.com';
