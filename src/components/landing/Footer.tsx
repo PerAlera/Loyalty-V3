@@ -5,9 +5,9 @@ const Footer = () => {
     <footer className="footer section container">
       <div className="footer-grid">
         <div className="footer-brand">
-          <div className="footer-logo">
-            <span className="logo-icon">🌿</span>
-            <span className="logo-text">peralera</span>
+          <div className="header-logo" style={{ marginBottom: '1rem' }}>
+            <img src="/peralera-logo.svg" alt="PerAlera Logo" className="logo-icon" style={{ width: '32px', height: 'auto', marginRight: '8px' }} />
+            <span className="logo-text">PerAlera</span>
           </div>
           <p>İşletmeler için dijital sadakat ve kampanya platformu.</p>
         </div>
@@ -33,8 +33,7 @@ const Footer = () => {
         <div className="footer-links">
           <h4>İletişim</h4>
           <ul>
-            <li><a href="mailto:hello@peralera.com">hello@peralera.com</a></li>
-            <li>+90 538 123 45 67</li>
+            <li><a href="mailto:alperen@peralera.com">alperen@peralera.com</a></li>
             <li className="social-icons">
                <a href="#">IG</a>
                <a href="#">IN</a>
