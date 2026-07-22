@@ -26,7 +26,10 @@ export default function middleware(req: NextRequest) {
   const baseDomainEnv = process.env.NEXT_PUBLIC_BASE_DOMAIN || 'peralera.com';
 
   const hostname = req.headers.get('host') || baseDomainEnv;
-  const cleanHostname = hostname.split(':')[0];
+  let cleanHostname = hostname.split(':')[0];
+  if (cleanHostname.startsWith('www.')) {
+    cleanHostname = cleanHostname.replace('www.', '');
+  }
 
   const searchParams = req.nextUrl.searchParams.toString();
   const path = `${url.pathname}${
