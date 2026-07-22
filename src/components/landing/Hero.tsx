@@ -8,19 +8,19 @@ const Hero = () => {
     <section className="hero section container">
       <div className="hero-content">
         <div className="badge">
-          <span>🎉</span> Dijital Sadakat Platformu
+          <span>🚀</span> Yeni Nesil Sadakat Yönetimi
         </div>
         <h1 className="hero-title text-gradient">
-          Sadık müşteriler, <br /> daha güçlü işletmeler.
+          Müşteri Sadakatini <br /> Geleceğe Taşıyın.
         </h1>
         <p className="hero-subtitle">
-          Peralera, kafeler ve yerel işletmeler için dijital sadakat ve kampanya yönetim platformudur.
+          Geleneksel kağıt kartları unutun. İşletmeniz için veri odaklı, %100 dijital sadakat ve kampanya yönetimi ile müşterilerinizi kalıcı hale getirin.
         </p>
         
         <ul className="hero-checklist">
-          <li><span className="check-icon">✓</span> Kolay Kullanım</li>
-          <li><span className="check-icon">✓</span> Akıllı İstatistikler</li>
-          <li><span className="check-icon">✓</span> Tamamen Dijital</li>
+          <li><span className="check-icon">✓</span> Hızlı Entegrasyon</li>
+          <li><span className="check-icon">✓</span> Gelişmiş Analitik</li>
+          <li><span className="check-icon">✓</span> Kesintisiz Deneyim</li>
         </ul>
 
         <div className="hero-actions">
@@ -37,7 +37,7 @@ const Hero = () => {
           </div>
           <div className="rating">
             <div className="stars">⭐⭐⭐⭐⭐</div>
-            <p>20+ işletme Peralera'yı kullanıyor.</p>
+            <p>Seçkin işletmeler PerAlera ile büyüyor.</p>
           </div>
         </div>
       </div>

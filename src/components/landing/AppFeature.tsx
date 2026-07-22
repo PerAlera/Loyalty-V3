@@ -9,21 +9,21 @@ const AppFeature = () => {
           <img src="/hero_phone.png" alt="Peralera App Campaigns" className="app-img drop-shadow" />
         </div>
         <div className="feature-content">
-          <h2>Müşterileriniz Sizinle Daha Çok Vakit Geçirsin.</h2>
-          <p>Dijital deneyimle müşterilerinize değer katın, onları işletmenize bağlayın.</p>
+          <h2>Müşterilerinizi İşletmenize Bağlayın.</h2>
+          <p>Markanıza özel dijital cüzdan ile müşterilerinize premium bir deneyim sunun ve sadakatlerini kalıcı hale getirin.</p>
           
           <div className="mini-features">
             <div className="mini-feature">
               <span className="icon">📱</span>
-              <h4>Uygulama Gerekmez</h4>
+              <h4>Uygulama İndirme Yok</h4>
             </div>
             <div className="mini-feature">
               <span className="icon">⚡</span>
-              <h4>Hızlı ve Güvenli</h4>
+              <h4>Saniyeler İçinde İşlem</h4>
             </div>
             <div className="mini-feature">
               <span className="icon">🔒</span>
-              <h4>Verileriniz Güvende</h4>
+              <h4>Üst Düzey Güvenlik</h4>
             </div>
           </div>
         </div>

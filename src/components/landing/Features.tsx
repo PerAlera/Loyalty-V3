@@ -4,8 +4,8 @@ const Features = () => {
   return (
     <section id="how-it-works" className="features-step section container">
       <div className="features-header text-center">
-        <h2>Nasıl Çalışır?</h2>
-        <p>Sadece 3 adımda sadakat sistemi hazır.</p>
+        <h2>Pürüzsüz Bir Müşteri Deneyimi</h2>
+        <p>Müşterileriniz için en zahmetsiz, işletmeniz için en verimli sadakat süreci.</p>
       </div>
 
       <div className="steps-container">
@@ -14,8 +14,8 @@ const Features = () => {
             <span className="step-icon">📱</span>
           </div>
           <div className="step-number">1</div>
-          <h3>QR Kodunu Okut</h3>
-          <p>Müşteri kasadaki QR kodunu okutur.</p>
+          <h3>QR Teknolojisi</h3>
+          <p>Müşteri kasadaki QR kodunu saniyeler içinde akıllı telefonuyla okutur.</p>
         </div>
         
         <div className="step-connector"></div>
@@ -25,8 +25,8 @@ const Features = () => {
             <span className="step-icon">☕</span>
           </div>
           <div className="step-number">2</div>
-          <h3>Puanını Kazan</h3>
-          <p>Her alışverişte puan birikir.</p>
+          <h3>Dijital Cüzdan</h3>
+          <p>Uygulama indirmeye gerek kalmadan dijital cüzdanda puanlar güvenle birikir.</p>
         </div>
         
         <div className="step-connector"></div>
@@ -36,8 +36,8 @@ const Features = () => {
             <span className="step-icon">🎁</span>
           </div>
           <div className="step-number">3</div>
-          <h3>Hediyeni Al</h3>
-          <p>Belirlediğiniz ödülleri kazanır.</p>
+          <h3>Akıllı Ödüller</h3>
+          <p>İşletmenizin belirlediği eşiklere ulaşıldığında, müşteriler ödüllerini kolayca kullanır.</p>
         </div>
       </div>
     </section>

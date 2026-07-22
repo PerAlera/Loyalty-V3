@@ -5,14 +5,14 @@ const DashboardFeature = () => {
     <section className="dashboard-feature section container">
       <div className="feature-grid">
         <div className="feature-content">
-          <h2>İşletmeniz Her Şeyi Görsün, Siz Yönetin.</h2>
-          <p>Tüm verileriniz tek panelde. Müşterilerinizi tanıyın, kampanyalarınızı yönetin, büyümenizi takip edin.</p>
+          <h2>Veriye Dayalı Yönetim ile Kontrol Sizde.</h2>
+          <p>Gelişmiş yönetim paneli sayesinde müşteri davranışlarını analiz edin, özel kampanyalar oluşturun ve işletmenizin büyüme ivmesini canlı takip edin.</p>
           
           <ul className="feature-checklist">
-            <li><span className="check-icon">✓</span> Gerçek zamanlı istatistikler</li>
-            <li><span className="check-icon">✓</span> Kampanya oluşturma</li>
-            <li><span className="check-icon">✓</span> Müşteri analizleri</li>
-            <li><span className="check-icon">✓</span> Kolay yönetim paneli</li>
+            <li><span className="check-icon">✓</span> Anlık Performans Raporları</li>
+            <li><span className="check-icon">✓</span> Hedefli Kampanya Yönetimi</li>
+            <li><span className="check-icon">✓</span> Detaylı Müşteri Segmentasyonu</li>
+            <li><span className="check-icon">✓</span> Kullanıcı Dostu Arayüz</li>
           </ul>
 
           <button className="btn btn-primary mt-4">Paneli Keşfet &rarr;</button>
