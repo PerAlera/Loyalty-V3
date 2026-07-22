@@ -7,7 +7,7 @@ const Header = () => {
   return (
     <header className="header container">
       <div className="header-logo">
-        <img src="/peralera-logo.svg" alt="PerAlera Logo" className="logo-icon" style={{ width: '28px', height: 'auto', marginRight: '8px' }} />
+        <img src="/peralera-logo.svg" alt="PerAlera Logo" className="logo-icon" style={{ width: '48px', height: 'auto', marginRight: '12px' }} />
         <span className="logo-text">PerAlera</span>
       </div>
       <nav className="header-nav">
