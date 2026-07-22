@@ -52,7 +52,7 @@ export default function Home() {
             margin: "0 auto 2rem auto",
             position: "relative"
           }}>
-            <Image src={business.logo || "/logo.svg"} alt={`${business.name} Logo`} fill style={{ objectFit: "contain" }} priority />
+            {business.logo && <Image src={business.logo} alt={`${business.name} Logo`} fill style={{ objectFit: "contain" }} priority />}
           </div>
           <h1 className="font-caveat" style={{ fontSize: "3.5rem", marginBottom: "1rem", color: "var(--text-primary)", lineHeight: 1 }}>Sana Özel<br/>Sadakat Sistemi</h1>
           <p style={{ color: "var(--text-secondary)", marginBottom: "3rem", fontSize: "1.125rem" }}>{business.name}'de kahveni iç, puanını topla, bedava kahveni kazan!</p>

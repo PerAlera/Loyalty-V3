@@ -39,7 +39,7 @@ const DemoBuilder = () => {
   return (
     <div className="demo-builder-container">
       <header className="demo-header container">
-        <Link href="/home" className="btn btn-secondary">&larr; Ana Sayfaya Dön</Link>
+        <Link href="/" className="btn btn-secondary">&larr; Ana Sayfaya Dön</Link>
         <h2>Uygulamanızı Tasarlayın</h2>
         <div style={{ width: '130px' }}></div> {/* Spacer for flex alignment */}
       </header>

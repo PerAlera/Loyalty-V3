@@ -260,7 +260,7 @@ export default function CustomerHome() {
           height: "75px",
           position: "relative"
         }}>
-          <Image src={business.logo || "/logo.svg"} alt={`${business.name} Logo`} fill style={{ objectFit: "contain" }} priority />
+          {business.logo && <Image src={business.logo} alt={`${business.name} Logo`} fill style={{ objectFit: "contain" }} priority />}
         </div>
 
         <h1 className="font-caveat" style={{ 

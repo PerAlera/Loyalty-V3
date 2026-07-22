@@ -45,7 +45,7 @@ export default function LoginPage(props: { params: Promise<{ slug: string }> }) 
     <div className={styles.authContainer}>
       <div className={`fade-in ${styles.authCard}`}>
         <div style={{ width: "120px", height: "120px", position: "relative", margin: "0 auto 1rem auto" }}>
-          <Image src={business.logo || "/logo.svg"} alt={`${business.name} Logo`} fill style={{ objectFit: "contain" }} priority />
+          {business.logo && <Image src={business.logo} alt={`${business.name} Logo`} fill style={{ objectFit: "contain" }} priority />}
         </div>
         <p className={styles.authSubtitle}>Giriş yapmak için bilgilerinizi girin.</p>
 
