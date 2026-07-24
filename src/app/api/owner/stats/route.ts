@@ -28,27 +28,27 @@ export async function GET() {
     // --- SUMMARY STATS ---
     const totalCashiers = business._count.users;
     const totalCustomers = await prisma.user.count({
-      where: { role: "CUSTOMER" }
+      where: { role: "CUSTOMER", businessId: business.id }
     });
 
     const totalRewardsData = await prisma.transaction.aggregate({
       _sum: { amount: true },
-      where: { type: "REDEEM_REWARD" }
+      where: { type: "REDEEM_REWARD", businessId: business.id }
     });
 
     const totalBeansData = await prisma.transaction.aggregate({
       _sum: { amount: true },
-      where: { type: "EARN_BEAN" }
+      where: { type: "EARN_BEAN", businessId: business.id }
     });
     
     const totalFoodRewardsData = await prisma.transaction.aggregate({
       _sum: { amount: true },
-      where: { type: "REDEEM_FOOD" }
+      where: { type: "REDEEM_FOOD", businessId: business.id }
     });
 
     const totalFoodPointsData = await prisma.transaction.aggregate({
       _sum: { amount: true },
-      where: { type: "EARN_FOOD" }
+      where: { type: "EARN_FOOD", businessId: business.id }
     });
 
     // --- RETURNING CUSTOMERS ---
