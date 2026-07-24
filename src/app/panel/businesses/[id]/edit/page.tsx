@@ -251,7 +251,7 @@ export default function EditBusinessPage({ params }: { params: Promise<{ id: str
           <div className="form-group">
             <label className="form-label">Yemek Ödül Maskotu</label>
             <div style={{ display: "flex", gap: "1rem", marginBottom: "1rem" }}>
-              {["/yemek.svg", "/mascot1.png", "/mascot2.png"].map(url => (
+              {["/yemek1.svg", "/yemek2.svg"].map(url => (
                 <div 
                   key={url} 
                   onClick={() => setFormData({ ...formData, foodMascot: url })}
