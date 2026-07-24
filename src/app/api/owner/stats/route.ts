@@ -56,6 +56,7 @@ export async function GET() {
     const returningCustomersData = await prisma.transaction.groupBy({
       by: ['userId'],
       where: { 
+        businessId: business.id,
         type: { in: ["EARN_BEAN", "EARN_FOOD"] } 
       },
       having: {
@@ -73,7 +74,7 @@ export async function GET() {
 
     // --- DEMOGRAPHICS ---
     const users = await prisma.user.findMany({
-      where: { role: "CUSTOMER" },
+      where: { role: "CUSTOMER", businessId: business.id },
       select: { gender: true }
     });
 
@@ -103,6 +104,7 @@ export async function GET() {
     // --- RECENT ACTIVITIES ---
     const recentTransactions = await prisma.transaction.findMany({
       take: 5,
+      where: { businessId: business.id },
       orderBy: { createdAt: "desc" },
       include: {
         user: {
@@ -137,6 +139,7 @@ export async function GET() {
 
     const todayTransactions = await prisma.transaction.findMany({
       where: { 
+        businessId: business.id,
         createdAt: { gte: todayUTCStart },
       },
       select: { type: true, amount: true, userId: true, createdAt: true }
@@ -183,6 +186,7 @@ export async function GET() {
     const sevenDaysAgoUTCStart = new Date(sevenDaysAgoTR.getTime() - TR_OFFSET);
 
     const allTransactions = await prisma.transaction.findMany({
+      where: { businessId: business.id },
       select: { type: true, amount: true, createdAt: true, userId: true }
     });
 

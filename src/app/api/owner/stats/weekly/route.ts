@@ -42,8 +42,7 @@ export async function GET(request: Request) {
     const weekLabel = `${mondayTR.getUTCDate()} ${monthsTR[mondayTR.getUTCMonth()]} - ${sundayTR.getUTCDate()} ${monthsTR[sundayTR.getUTCMonth()]}`;
 
     const transactions = await prisma.transaction.findMany({
-      where: {
-        createdAt: {
+      where: { businessId: session.user.businessId as string, createdAt: {
           gte: startUTC,
           lte: endUTC
         }
