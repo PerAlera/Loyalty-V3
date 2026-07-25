@@ -1,8 +1,16 @@
 import { getServerSession } from "@/lib/auth";
 import { NextResponse } from "next/server";
-
-
+import webPush from "web-push";
 import prisma from "@/lib/prisma";
+
+// Configure Web Push
+if (process.env.NEXT_PUBLIC_VAPID_PUBLIC_KEY && process.env.VAPID_PRIVATE_KEY) {
+  webPush.setVapidDetails(
+    "mailto:alperen@peralera.com",
+    process.env.NEXT_PUBLIC_VAPID_PUBLIC_KEY,
+    process.env.VAPID_PRIVATE_KEY
+  );
+}
 
 export async function POST(req: Request) {
   try {
@@ -13,7 +21,7 @@ export async function POST(req: Request) {
     }
 
     const body = await req.json();
-    const { title, content } = body;
+    const { title, content, sendPush, target, selectedUserIds } = body;
 
     if (!title || !content) {
       return NextResponse.json({ error: "Başlık ve içerik gereklidir" }, { status: 400 });
@@ -30,8 +38,53 @@ export async function POST(req: Request) {
       }
     });
 
+    // Send push notifications if requested
+    if (sendPush) {
+      let subscriptions: any[] = [];
+      
+      if (target === "all") {
+        subscriptions = await prisma.pushSubscription.findMany({
+          where: { user: { businessId: business.id } }
+        });
+      } else if (target === "selected" && selectedUserIds && selectedUserIds.length > 0) {
+        subscriptions = await prisma.pushSubscription.findMany({
+          where: { 
+            userId: { in: selectedUserIds },
+            user: { businessId: business.id }
+          }
+        });
+      }
+
+      const payload = JSON.stringify({
+        title: title,
+        body: content,
+        icon: business.logo || "/icon.svg",
+        url: "/" // Redirect to home on click
+      });
+
+      const pushPromises = subscriptions.map(sub => {
+        const pushSubscription = {
+          endpoint: sub.endpoint,
+          keys: {
+            p256dh: sub.p256dh,
+            auth: sub.auth
+          }
+        };
+        return webPush.sendNotification(pushSubscription, payload).catch(err => {
+          console.error("Push notification failed for endpoint:", sub.endpoint, err);
+          // Optional: if error is 410 (Gone), delete the subscription from DB
+          if (err.statusCode === 410) {
+            return prisma.pushSubscription.delete({ where: { id: sub.id } });
+          }
+        });
+      });
+
+      await Promise.all(pushPromises);
+    }
+
     return NextResponse.json({ success: true, announcement: newAnnouncement });
   } catch (error) {
+    console.error("Announcements API Error:", error);
     return NextResponse.json({ error: "Sunucu hatası" }, { status: 500 });
   }
 }
