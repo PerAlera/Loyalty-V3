@@ -22,8 +22,8 @@ export default function OwnerAnnouncementsPage() {
   const fetchData = async () => {
     try {
       const [annRes, custRes] = await Promise.all([
-        fetch("/api/announcements"),
-        fetch("/api/owner/customers")
+        fetch("/api/announcements", { cache: "no-store" }),
+        fetch("/api/owner/customers", { cache: "no-store" })
       ]);
       
       if (annRes.ok) {
@@ -185,7 +185,7 @@ export default function OwnerAnnouncementsPage() {
                           <div style={{ fontSize: "0.75rem", color: "var(--text-secondary)" }}>
                             {c.phone} {c.hasPush ? "🔔 (Bildirim Açık)" : ""}
                             <span style={{ display: "block", marginTop: "0.1rem", opacity: 0.7 }}>
-                              Son Ziyaret: {new Date(c.lastVisit).toLocaleDateString("tr-TR")}
+                              Son Ziyaret: {c.lastVisit ? new Date(c.lastVisit).toLocaleDateString("tr-TR") : "Bilinmiyor"}
                             </span>
                           </div>
                         </div>

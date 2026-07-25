@@ -1,5 +1,7 @@
 import "./globals.css";
 import type { Metadata, Viewport } from "next";
+import { Inter, Caveat } from "next/font/google";
+import { Providers } from "./providers";
 
 export const viewport: Viewport = {
   themeColor: "#654321",
@@ -15,9 +17,6 @@ export const metadata: Metadata = {
     title: "Peralera",
   },
 };
-
-import { Inter, Caveat } from "next/font/google";
-import { Providers } from "./providers";
 
 const inter = Inter({ 
   subsets: ["latin"], 
