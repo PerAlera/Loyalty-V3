@@ -15,6 +15,7 @@ model Business {
   coffeeMascot  String?
   foodMascot    String?
   theme         String?        // e.g., JSON string or color hex
+  isFoodEnabled Boolean        @default(true)
   users         User[]
   settings      BusinessSettings?
   announcements Announcement[]

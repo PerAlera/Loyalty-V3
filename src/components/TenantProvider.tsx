@@ -10,6 +10,7 @@ type BusinessInfo = {
   theme: string | null;
   coffeeMascot: string | null;
   foodMascot: string | null;
+  isFoodEnabled: boolean;
 };
 
 const TenantContext = createContext<BusinessInfo | null>(null);

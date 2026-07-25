@@ -4,9 +4,11 @@ import { useEffect, useState } from "react";
 import { useSession  } from "@/components/AuthProvider";
 import { Users, Gift, Coffee, Calendar, Clock, Activity, PieChart as PieChartIcon, BarChart2, TrendingUp, Sun } from "lucide-react";
 import { LineChart, Line, BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip as RechartsTooltip, Legend, ResponsiveContainer, PieChart, Pie, Cell } from "recharts";
+import { useTenant } from "@/components/TenantProvider";
 
 export default function OwnerDashboard() {
   const { data: session } = useSession();
+  const business = useTenant();
   const [stats, setStats] = useState<any>(null);
   
   // Weekly Chart State
@@ -68,12 +70,14 @@ export default function OwnerDashboard() {
           <div style={{ fontSize: "2.5rem", fontWeight: "bold", color: "var(--primary)" }}>{stats?.todayBeans || 0}</div>
         </div>
 
-        <div className="surface-card" style={{ padding: "1.5rem", display: "flex", flexDirection: "column", gap: "0.5rem", borderLeft: "4px solid #F59E0B", backgroundColor: "rgba(245, 158, 11, 0.05)" }}>
-          <div style={{ display: "flex", alignItems: "center", gap: "0.5rem", color: "var(--text-secondary)" }}>
-            <Gift size={20} /> <span style={{ fontSize: "0.875rem" }}>Dağıtılan Yemek Puanı</span>
+        {business.isFoodEnabled && (
+          <div className="surface-card" style={{ padding: "1.5rem", display: "flex", flexDirection: "column", gap: "0.5rem", borderLeft: "4px solid #F59E0B", backgroundColor: "rgba(245, 158, 11, 0.05)" }}>
+            <div style={{ display: "flex", alignItems: "center", gap: "0.5rem", color: "var(--text-secondary)" }}>
+              <Gift size={20} /> <span style={{ fontSize: "0.875rem" }}>Dağıtılan Yemek Puanı</span>
+            </div>
+            <div style={{ fontSize: "2.5rem", fontWeight: "bold", color: "#F59E0B" }}>{stats?.todayFoodPoints || 0}</div>
           </div>
-          <div style={{ fontSize: "2.5rem", fontWeight: "bold", color: "#F59E0B" }}>{stats?.todayFoodPoints || 0}</div>
-        </div>
+        )}
 
         <div className="surface-card" style={{ padding: "1.5rem", display: "flex", flexDirection: "column", gap: "0.5rem", borderLeft: "4px solid var(--success)", backgroundColor: "rgba(34, 197, 94, 0.05)" }}>
           <div style={{ display: "flex", alignItems: "center", gap: "0.5rem", color: "var(--text-secondary)" }}>
@@ -110,15 +114,19 @@ export default function OwnerDashboard() {
           <div style={{ fontSize: "1.5rem", fontWeight: "bold", color: "var(--primary)" }}>{stats?.totalRewards || 0}</div>
         </div>
 
-        <div className="surface-card" style={{ padding: "1.25rem", display: "flex", flexDirection: "column", gap: "0.25rem", borderLeft: "3px solid #F59E0B" }}>
-          <div style={{ color: "var(--text-secondary)", fontSize: "0.8rem" }}>Dağıtılan Yemek Puanı</div>
-          <div style={{ fontSize: "1.5rem", fontWeight: "bold", color: "#F59E0B" }}>{stats?.totalFoodPoints || 0}</div>
-        </div>
+        {business.isFoodEnabled && (
+          <>
+            <div className="surface-card" style={{ padding: "1.25rem", display: "flex", flexDirection: "column", gap: "0.25rem", borderLeft: "3px solid #F59E0B" }}>
+              <div style={{ color: "var(--text-secondary)", fontSize: "0.8rem" }}>Dağıtılan Yemek Puanı</div>
+              <div style={{ fontSize: "1.5rem", fontWeight: "bold", color: "#F59E0B" }}>{stats?.totalFoodPoints || 0}</div>
+            </div>
 
-        <div className="surface-card" style={{ padding: "1.25rem", display: "flex", flexDirection: "column", gap: "0.25rem", borderLeft: "3px solid #F59E0B" }}>
-          <div style={{ color: "var(--text-secondary)", fontSize: "0.8rem" }}>Verilen Yemek Ödülü</div>
-          <div style={{ fontSize: "1.5rem", fontWeight: "bold", color: "#F59E0B" }}>{stats?.totalFoodRewards || 0}</div>
-        </div>
+            <div className="surface-card" style={{ padding: "1.25rem", display: "flex", flexDirection: "column", gap: "0.25rem", borderLeft: "3px solid #F59E0B" }}>
+              <div style={{ color: "var(--text-secondary)", fontSize: "0.8rem" }}>Verilen Yemek Ödülü</div>
+              <div style={{ fontSize: "1.5rem", fontWeight: "bold", color: "#F59E0B" }}>{stats?.totalFoodRewards || 0}</div>
+            </div>
+          </>
+        )}
 
         <div className="surface-card" style={{ padding: "1.25rem", display: "flex", flexDirection: "column", gap: "0.25rem" }}>
           <div style={{ color: "var(--text-secondary)", fontSize: "0.8rem" }}>En Yoğun Gün</div>
@@ -223,8 +231,12 @@ export default function OwnerDashboard() {
                   <Legend />
                   <Line type="monotone" name="Kahve Puanı" dataKey="bean" stroke="var(--primary)" strokeWidth={2} />
                   <Line type="monotone" name="Kahve Ödülü" dataKey="reward" stroke="var(--primary)" strokeDasharray="5 5" strokeWidth={2} />
-                  <Line type="monotone" name="Yemek Puanı" dataKey="foodPoints" stroke="#F59E0B" strokeWidth={2} />
-                  <Line type="monotone" name="Yemek Ödülü" dataKey="foodRewards" stroke="#F59E0B" strokeDasharray="5 5" strokeWidth={2} />
+                  {business.isFoodEnabled && (
+                    <>
+                      <Line type="monotone" name="Yemek Puanı" dataKey="foodPoints" stroke="#F59E0B" strokeWidth={2} />
+                      <Line type="monotone" name="Yemek Ödülü" dataKey="foodRewards" stroke="#F59E0B" strokeDasharray="5 5" strokeWidth={2} />
+                    </>
+                  )}
                 </LineChart>
               </ResponsiveContainer>
             ) : (

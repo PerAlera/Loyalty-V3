@@ -20,7 +20,8 @@ export default function EditBusinessPage({ params }: { params: Promise<{ id: str
     theme: "",
     logo: "",
     coffeeMascot: "",
-    foodMascot: ""
+    foodMascot: "",
+    isFoodEnabled: true
   });
 
   useEffect(() => {
@@ -35,7 +36,8 @@ export default function EditBusinessPage({ params }: { params: Promise<{ id: str
             theme: data.business.theme || "",
             logo: data.business.logo || "",
             coffeeMascot: data.business.coffeeMascot || "",
-            foodMascot: data.business.foodMascot || ""
+            foodMascot: data.business.foodMascot || "",
+            isFoodEnabled: data.business.isFoodEnabled ?? true
           });
         }
       } catch (err) {
@@ -192,6 +194,21 @@ export default function EditBusinessPage({ params }: { params: Promise<{ id: str
                 style={{ flex: 1 }}
               />
             </div>
+          </div>
+
+          <div className="form-group">
+            <label className="form-label" style={{ display: "flex", alignItems: "center", gap: "0.5rem", cursor: "pointer" }}>
+              <input 
+                type="checkbox" 
+                checked={formData.isFoodEnabled} 
+                onChange={e => setFormData({ ...formData, isFoodEnabled: e.target.checked })}
+                style={{ width: "1.2rem", height: "1.2rem", cursor: "pointer" }}
+              />
+              Yemek Sadakat Sistemi Aktif
+            </label>
+            <p style={{ color: "var(--text-secondary)", fontSize: "0.875rem", marginTop: "0.25rem", marginLeft: "1.7rem" }}>
+              Bu özellik kapatıldığında restoran/yemek ile ilgili puanlama ve istatistik özellikleri (hem müşteri hem yönetici panelinde) tamamen gizlenir.
+            </p>
           </div>
 
           <hr style={{ borderColor: "var(--border-color)", margin: "1rem 0" }} />

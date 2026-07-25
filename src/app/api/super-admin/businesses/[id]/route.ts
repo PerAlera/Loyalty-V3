@@ -39,7 +39,7 @@ export async function PUT(req: Request, { params }: { params: Promise<{ id: stri
     const resolvedParams = await params;
     const businessId = resolvedParams.id;
     const body = await req.json();
-    const { name, slug, theme, logo, coffeeMascot, foodMascot } = body;
+    const { name, slug, theme, logo, coffeeMascot, foodMascot, isFoodEnabled } = body;
 
     if (!name || !slug) {
       return NextResponse.json({ error: "İşletme adı ve slug zorunludur" }, { status: 400 });
@@ -65,7 +65,8 @@ export async function PUT(req: Request, { params }: { params: Promise<{ id: stri
         theme,
         logo,
         coffeeMascot,
-        foodMascot
+        foodMascot,
+        isFoodEnabled: isFoodEnabled !== undefined ? isFoodEnabled : true,
       }
     });
 

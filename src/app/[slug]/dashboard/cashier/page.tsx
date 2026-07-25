@@ -3,9 +3,11 @@
 import { useState, useEffect } from "react";
 import { signOut, useSession  } from "@/components/AuthProvider";
 import { QRCodeSVG } from "qrcode.react";
+import { useTenant } from "@/components/TenantProvider";
 
 export default function CashierDashboard() {
   const { data: session } = useSession();
+  const business = useTenant();
   
   const [token, setToken] = useState<string | null>(null);
   const [beans, setBeans] = useState<number>(1);
@@ -100,22 +102,24 @@ export default function CashierDashboard() {
         ) : (
           <form onSubmit={generateToken} style={{ display: "flex", flexDirection: "column", gap: "1.5rem" }}>
             
-            <div style={{ display: "flex", background: "var(--bg-primary)", borderRadius: "0.5rem", overflow: "hidden", border: "1px solid var(--border-color)" }}>
-              <button
-                type="button"
-                onClick={() => setProductType("COFFEE")}
-                style={{ flex: 1, padding: "0.75rem", border: "none", cursor: "pointer", fontWeight: "bold", background: productType === "COFFEE" ? "var(--primary)" : "transparent", color: productType === "COFFEE" ? "white" : "var(--text-secondary)", transition: "all 0.2s" }}
-              >
-                ☕ Kahve
-              </button>
-              <button
-                type="button"
-                onClick={() => setProductType("FOOD")}
-                style={{ flex: 1, padding: "0.75rem", border: "none", cursor: "pointer", fontWeight: "bold", background: productType === "FOOD" ? "#F59E0B" : "transparent", color: productType === "FOOD" ? "white" : "var(--text-secondary)", transition: "all 0.2s" }}
-              >
-                🍔 Yemek
-              </button>
-            </div>
+            {business.isFoodEnabled && (
+              <div style={{ display: "flex", background: "var(--bg-primary)", borderRadius: "0.5rem", overflow: "hidden", border: "1px solid var(--border-color)" }}>
+                <button
+                  type="button"
+                  onClick={() => setProductType("COFFEE")}
+                  style={{ flex: 1, padding: "0.75rem", border: "none", cursor: "pointer", fontWeight: "bold", background: productType === "COFFEE" ? "var(--primary)" : "transparent", color: productType === "COFFEE" ? "white" : "var(--text-secondary)", transition: "all 0.2s" }}
+                >
+                  ☕ Kahve
+                </button>
+                <button
+                  type="button"
+                  onClick={() => setProductType("FOOD")}
+                  style={{ flex: 1, padding: "0.75rem", border: "none", cursor: "pointer", fontWeight: "bold", background: productType === "FOOD" ? "#F59E0B" : "transparent", color: productType === "FOOD" ? "white" : "var(--text-secondary)", transition: "all 0.2s" }}
+                >
+                  🍔 Yemek
+                </button>
+              </div>
+            )}
 
             <div style={{ display: "flex", flexDirection: "column", gap: "0.5rem", textAlign: "left" }}>
               <label style={{ fontWeight: "bold", color: "var(--text-secondary)", fontSize: "0.875rem" }}>Puan Adedi</label>

@@ -25,7 +25,7 @@ export async function POST(req: Request) {
     }
 
     const body = await req.json();
-    const { name, slug, theme, adminName, adminSurname, adminPhone, adminPassword } = body;
+    const { name, slug, theme, adminName, adminSurname, adminPhone, adminPassword, isFoodEnabled } = body;
 
     if (!name || !slug || !adminName || !adminSurname || !adminPhone || !adminPassword) {
       return NextResponse.json({ error: "Eksik bilgi" }, { status: 400 });
@@ -46,6 +46,7 @@ export async function POST(req: Request) {
         name,
         slug,
         theme,
+        isFoodEnabled: isFoodEnabled !== undefined ? isFoodEnabled : true,
         settings: {
           create: {
             requiredCoffees: 10,

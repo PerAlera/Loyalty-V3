@@ -3,8 +3,10 @@
 import { useEffect, useState } from "react";
 import { Settings, Save, LogOut } from "lucide-react";
 import { signOut  } from "@/components/AuthProvider";
+import { useTenant } from "@/components/TenantProvider";
 
 export default function OwnerSettingsPage() {
+  const business = useTenant();
   const [settings, setSettings] = useState<any>(null);
   const [newSettings, setNewSettings] = useState({ requiredCoffees: 10, requiredFoods: 10, profileRewardEnabled: false, profileRewardAmount: 1, name: "", theme: "" });
   const [passwords, setPasswords] = useState({ currentPassword: "", newPassword: "", confirmPassword: "" });
@@ -135,21 +137,23 @@ export default function OwnerSettingsPage() {
             </p>
           </div>
 
-          <div className="form-group">
-            <label className="form-label">Ücretsiz Yemek İçin Gereken Puan Sayısı</label>
-            <input 
-              type="number" 
-              min="1" 
-              max="50"
-              className="form-input" 
-              value={newSettings.requiredFoods} 
-              onChange={e => setNewSettings({ ...newSettings, requiredFoods: parseInt(e.target.value) })}
-              required 
-            />
-            <p style={{ fontSize: "0.875rem", color: "var(--text-secondary)", marginTop: "0.5rem" }}>
-              Müşteriler, belirlediğiniz adette yemek puanı topladığında 1 adet ücretsiz yemek ödülü kazanır. (Mevcut: {settings?.requiredFoods || 10})
-            </p>
-          </div>
+          {business.isFoodEnabled && (
+            <div className="form-group">
+              <label className="form-label">Ücretsiz Yemek İçin Gereken Puan Sayısı</label>
+              <input 
+                type="number" 
+                min="1" 
+                max="50"
+                className="form-input" 
+                value={newSettings.requiredFoods} 
+                onChange={e => setNewSettings({ ...newSettings, requiredFoods: parseInt(e.target.value) })}
+                required 
+              />
+              <p style={{ fontSize: "0.875rem", color: "var(--text-secondary)", marginTop: "0.5rem" }}>
+                Müşteriler, belirlediğiniz adette yemek puanı topladığında 1 adet ücretsiz yemek ödülü kazanır. (Mevcut: {settings?.requiredFoods || 10})
+              </p>
+            </div>
+          )}
 
           <hr style={{ borderColor: "var(--border-color)", margin: "1rem 0" }} />
 

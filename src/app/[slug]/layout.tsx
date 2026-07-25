@@ -61,7 +61,8 @@ export default async function TenantLayout({
         logo: business.logo, 
         theme: business.theme,
         coffeeMascot: business.coffeeMascot,
-        foodMascot: business.foodMascot
+        foodMascot: business.foodMascot,
+        isFoodEnabled: business.isFoodEnabled
       }}>
         {children}
       </TenantProvider>

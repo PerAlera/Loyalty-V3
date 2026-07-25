@@ -283,44 +283,46 @@ export default function CustomerHome() {
       <div style={{ flex: 1, display: "flex", flexDirection: "column", alignItems: "center", justifyContent: "center" }}>
 
         {/* Toggle Buttons */}
-        <div style={{ display: "flex", justifyContent: "center", gap: "1.5rem", marginBottom: "1.5rem" }}>
-          <button 
-            onClick={() => setActiveTab("COFFEE")}
-            style={{ 
-              width: "60px", height: "60px", borderRadius: "50%", 
-              display: "flex", alignItems: "center", justifyContent: "center",
-              border: activeTab === "COFFEE" ? "none" : "2px solid var(--primary)",
-              backgroundColor: activeTab === "COFFEE" ? "var(--primary)" : "var(--bg-primary)",
-              color: activeTab === "COFFEE" ? "white" : "var(--primary)",
-              boxShadow: activeTab === "COFFEE" ? "0 0 0 6px rgba(101, 67, 33, 0.15)" : "none",
-              cursor: "pointer", transition: "all 0.3s ease"
-            }}
-          >
-            <Coffee size={28} />
-          </button>
-          
-          <button 
-            onClick={() => setActiveTab("FOOD")}
-            style={{ 
-              width: "60px", height: "60px", borderRadius: "50%", 
-              display: "flex", alignItems: "center", justifyContent: "center",
-              border: activeTab === "FOOD" ? "none" : "2px solid #F59E0B",
-              backgroundColor: activeTab === "FOOD" ? "#F59E0B" : "var(--bg-primary)",
-              color: activeTab === "FOOD" ? "white" : "#F59E0B",
-              boxShadow: activeTab === "FOOD" ? "0 0 0 6px rgba(245, 158, 11, 0.15)" : "none",
-              cursor: "pointer", transition: "all 0.3s ease"
-            }}
-          >
-            <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-              <path d="M12 3a9 9 0 0 0-9 9h18a9 9 0 0 0-9-9Z"></path>
-              <path d="M3 12h18"></path>
-              <path d="M5 16h14"></path>
-              <path d="M12 3v9"></path>
-              <path d="M7.5 4.5 9 12"></path>
-              <path d="M16.5 4.5 15 12"></path>
-            </svg>
-          </button>
-        </div>
+        {business.isFoodEnabled && (
+          <div style={{ display: "flex", justifyContent: "center", gap: "1.5rem", marginBottom: "1.5rem" }}>
+            <button 
+              onClick={() => setActiveTab("COFFEE")}
+              style={{ 
+                width: "60px", height: "60px", borderRadius: "50%", 
+                display: "flex", alignItems: "center", justifyContent: "center",
+                border: activeTab === "COFFEE" ? "none" : "2px solid var(--primary)",
+                backgroundColor: activeTab === "COFFEE" ? "var(--primary)" : "var(--bg-primary)",
+                color: activeTab === "COFFEE" ? "white" : "var(--primary)",
+                boxShadow: activeTab === "COFFEE" ? "0 0 0 6px rgba(101, 67, 33, 0.15)" : "none",
+                cursor: "pointer", transition: "all 0.3s ease"
+              }}
+            >
+              <Coffee size={28} />
+            </button>
+            
+            <button 
+              onClick={() => setActiveTab("FOOD")}
+              style={{ 
+                width: "60px", height: "60px", borderRadius: "50%", 
+                display: "flex", alignItems: "center", justifyContent: "center",
+                border: activeTab === "FOOD" ? "none" : "2px solid #F59E0B",
+                backgroundColor: activeTab === "FOOD" ? "#F59E0B" : "var(--bg-primary)",
+                color: activeTab === "FOOD" ? "white" : "#F59E0B",
+                boxShadow: activeTab === "FOOD" ? "0 0 0 6px rgba(245, 158, 11, 0.15)" : "none",
+                cursor: "pointer", transition: "all 0.3s ease"
+              }}
+            >
+              <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                <path d="M12 3a9 9 0 0 0-9 9h18a9 9 0 0 0-9-9Z"></path>
+                <path d="M3 12h18"></path>
+                <path d="M5 16h14"></path>
+                <path d="M12 3v9"></path>
+                <path d="M7.5 4.5 9 12"></path>
+                <path d="M16.5 4.5 15 12"></path>
+              </svg>
+            </button>
+          </div>
+        )}
 
         {/* Mascot ve Puanlar */}
         <div style={{ width: "100%", maxWidth: "300px", margin: "0 auto 2rem auto" }} className="fade-in">
@@ -343,7 +345,7 @@ export default function CustomerHome() {
             Qr Okut<br/>Kazan
           </button>
 
-          <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: "1rem" }}>
+          <div style={{ display: "grid", gridTemplateColumns: business.isFoodEnabled ? "1fr 1fr" : "1fr", gap: "1rem" }}>
             
             {/* Kahve Ödül Butonu */}
             <div style={{ position: "relative", width: "100%" }}>
@@ -388,46 +390,48 @@ export default function CustomerHome() {
             </div>
             
             {/* Yemek Ödül Butonu */}
-            <div style={{ position: "relative", width: "100%" }}>
-              {hasRewardFood && (
-                <div style={{
-                  position: "absolute",
-                  top: "-10px",
-                  left: "-10px",
-                  backgroundColor: "#EF4444", 
-                  color: "white",
-                  width: "28px",
-                  height: "28px",
-                  borderRadius: "50%",
-                  display: "flex",
-                  alignItems: "center",
-                  justifyContent: "center",
-                  fontWeight: "bold",
-                  fontSize: "0.8rem",
-                  zIndex: 10,
-                  boxShadow: "0 2px 5px rgba(0,0,0,0.2)",
-                  animation: "bounce 2s infinite"
-                }}>
-                  {wallet.foodRewards}
-                </div>
-              )}
-              <button 
-                className="btn-secondary" 
-                onClick={() => handleOpenRedeem("FOOD")}
-                style={{ 
-                  width: "100%",
-                  fontSize: "0.875rem", 
-                  padding: "0.875rem 0",
-                  opacity: hasRewardFood ? 1 : 0.5,
-                  cursor: hasRewardFood ? "pointer" : "not-allowed",
-                  borderColor: "#F59E0B",
-                  color: "#F59E0B"
-                }}
-                disabled={!hasRewardFood}
-              >
-                🍔 Yemek Ödülü
-              </button>
-            </div>
+            {business.isFoodEnabled && (
+              <div style={{ position: "relative", width: "100%" }}>
+                {hasRewardFood && (
+                  <div style={{
+                    position: "absolute",
+                    top: "-10px",
+                    left: "-10px",
+                    backgroundColor: "#EF4444", 
+                    color: "white",
+                    width: "28px",
+                    height: "28px",
+                    borderRadius: "50%",
+                    display: "flex",
+                    alignItems: "center",
+                    justifyContent: "center",
+                    fontWeight: "bold",
+                    fontSize: "0.8rem",
+                    zIndex: 10,
+                    boxShadow: "0 2px 5px rgba(0,0,0,0.2)",
+                    animation: "bounce 2s infinite"
+                  }}>
+                    {wallet.foodRewards}
+                  </div>
+                )}
+                <button 
+                  className="btn-secondary" 
+                  onClick={() => handleOpenRedeem("FOOD")}
+                  style={{ 
+                    width: "100%",
+                    fontSize: "0.875rem", 
+                    padding: "0.875rem 0",
+                    opacity: hasRewardFood ? 1 : 0.5,
+                    cursor: hasRewardFood ? "pointer" : "not-allowed",
+                    borderColor: "#F59E0B",
+                    color: "#F59E0B"
+                  }}
+                  disabled={!hasRewardFood}
+                >
+                  🍔 Yemek Ödülü
+                </button>
+              </div>
+            )}
             
           </div>
           

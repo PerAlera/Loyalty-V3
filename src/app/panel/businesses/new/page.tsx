@@ -16,11 +16,13 @@ export default function NewBusinessPage() {
     adminName: "",
     adminSurname: "",
     adminPhone: "",
-    adminPassword: ""
+    adminPassword: "",
+    isFoodEnabled: true
   });
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    setFormData({ ...formData, [e.target.name]: e.target.value });
+    const value = e.target.type === 'checkbox' ? e.target.checked : e.target.value;
+    setFormData({ ...formData, [e.target.name]: value });
   };
 
   const handleSubmit = async (e: React.FormEvent) => {
@@ -94,6 +96,22 @@ export default function NewBusinessPage() {
                 <input type="color" id="theme" name="theme" value={formData.theme} onChange={handleChange} style={{ width: "50px", height: "50px", padding: "0", border: "none", borderRadius: "0.5rem", cursor: "pointer" }} />
                 <span style={{ fontFamily: "monospace", color: "var(--text-secondary)" }}>{formData.theme}</span>
               </div>
+            </div>
+
+            <div className="form-group" style={{ gridColumn: "1 / -1" }}>
+              <label className="form-label" style={{ display: "flex", alignItems: "center", gap: "0.5rem", cursor: "pointer" }}>
+                <input 
+                  type="checkbox" 
+                  name="isFoodEnabled" 
+                  checked={formData.isFoodEnabled} 
+                  onChange={handleChange}
+                  style={{ width: "1.2rem", height: "1.2rem", cursor: "pointer" }}
+                />
+                Yemek Sadakat Sistemi Aktif
+              </label>
+              <p style={{ color: "var(--text-secondary)", fontSize: "0.875rem", marginTop: "0.25rem", marginLeft: "1.7rem" }}>
+                Bu özellik kapatıldığında restoran/yemek ile ilgili puanlama ve istatistik özellikleri (hem müşteri hem yönetici panelinde) tamamen gizlenir.
+              </p>
             </div>
           </div>
         </div>
