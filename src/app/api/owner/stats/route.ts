@@ -131,55 +131,8 @@ export async function GET() {
       return `${t.user.name} ${t.user.surname} işlem yaptı (${timeStr})`;
     });
 
-    // --- NEW: TODAY STATS ---
-    const now = new Date();
-    const nowTR = getTRDate(now);
-    nowTR.setUTCHours(0, 0, 0, 0); // Start of day in TR time
-    const todayUTCStart = new Date(nowTR.getTime() - TR_OFFSET);
-
-    const todayTransactions = await prisma.transaction.findMany({
-      where: { 
-        businessId: business.id,
-        createdAt: { gte: todayUTCStart },
-      },
-      select: { type: true, amount: true, userId: true, createdAt: true }
-    });
-
-    let todayBeans = 0;
-    let todayFoodPoints = 0;
-    const uniqueUserIds = new Set<string>();
-
-    // Map for today's hourly data (09:00 to 22:00) using Sets to count unique users per hour
-    const todayHourlyUserMap: Record<string, Set<string>> = {};
-    for(let i=9; i<=22; i++) {
-      todayHourlyUserMap[`${i.toString().padStart(2, '0')}:00`] = new Set();
-    }
-
-    todayTransactions.forEach(t => {
-      if (t.type === "EARN_BEAN") {
-        todayBeans += t.amount;
-      }
-      if (t.type === "EARN_FOOD") {
-        todayFoodPoints += t.amount;
-      }
-      
-      uniqueUserIds.add(t.userId);
-
-      const trDate = getTRDate(t.createdAt);
-      const hour = trDate.getUTCHours();
-      if(hour >= 9 && hour <= 22) {
-        const hourStr = `${hour.toString().padStart(2, '0')}:00`;
-        todayHourlyUserMap[hourStr].add(t.userId);
-      }
-    });
-
-    const todayUniqueCustomers = uniqueUserIds.size;
-    const todayHourlyData = Object.keys(todayHourlyUserMap).map(key => ({
-      hour: key,
-      islem: todayHourlyUserMap[key].size
-    }));
-
     // --- 7 DAYS CHART & WEEKLY DISTRIBUTION ---
+    const now = new Date();
     const sevenDaysAgoTR = getTRDate(now);
     sevenDaysAgoTR.setUTCDate(sevenDaysAgoTR.getUTCDate() - 7);
     sevenDaysAgoTR.setUTCHours(0, 0, 0, 0);
@@ -276,11 +229,7 @@ export async function GET() {
       recentActivities: activities,
       chartData,
       busiestDay,
-      busiestHour,
-      todayBeans,
-      todayFoodPoints,
-      todayUniqueCustomers,
-      todayHourlyData
+      busiestHour
     });
 
   } catch (error) {
