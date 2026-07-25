@@ -1,9 +1,19 @@
 import "./globals.css";
-import type { Metadata } from "next";
+import type { Metadata, Viewport } from "next";
+
+export const viewport: Viewport = {
+  themeColor: "#654321",
+};
 
 export const metadata: Metadata = {
   title: "Loyalty App - Dijital Sadakat Sistemi",
   description: "Modern, hızlı ve premium dijital sadakat sistemi.",
+  manifest: "/manifest.json",
+  appleWebApp: {
+    capable: true,
+    statusBarStyle: "default",
+    title: "Peralera",
+  },
 };
 
 import { Inter, Caveat } from "next/font/google";

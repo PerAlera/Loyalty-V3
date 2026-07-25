@@ -22,21 +22,33 @@ export async function GET(req: Request) {
         name: true,
         surname: true,
         phone: true,
+        createdAt: true,
         pushSubscriptions: {
           select: { id: true }
+        },
+        transactions: {
+          orderBy: { createdAt: "desc" },
+          take: 1,
+          select: { createdAt: true }
         }
       },
       orderBy: { createdAt: "desc" }
     });
 
     // We can also flag if they have push enabled to help the admin
-    const mapped = customers.map(c => ({
-      id: c.id,
-      name: c.name,
-      surname: c.surname,
-      phone: c.phone,
-      hasPush: c.pushSubscriptions.length > 0
-    }));
+    // and compute lastVisit
+    const mapped = customers.map(c => {
+      const lastTxDate = c.transactions.length > 0 ? c.transactions[0].createdAt : c.createdAt;
+      
+      return {
+        id: c.id,
+        name: c.name,
+        surname: c.surname,
+        phone: c.phone,
+        hasPush: c.pushSubscriptions.length > 0,
+        lastVisit: lastTxDate
+      };
+    });
 
     return NextResponse.json({ customers: mapped });
   } catch (error) {

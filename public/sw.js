@@ -19,3 +19,8 @@ self.addEventListener("notificationclick", function (event) {
     event.waitUntil(clients.openWindow(event.notification.data));
   }
 });
+
+self.addEventListener("fetch", function(event) {
+  // PWA installability requires a fetch handler
+});
+

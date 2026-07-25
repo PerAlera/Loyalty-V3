@@ -73,6 +73,29 @@ export default function OwnerAnnouncementsPage() {
     });
   };
 
+  const applyFilter = (e: React.ChangeEvent<HTMLSelectElement>) => {
+    const filterType = e.target.value;
+    if (filterType === "all") {
+      setNewAnnouncement(prev => ({ ...prev, selectedUserIds: customers.map(c => c.id) }));
+      return;
+    }
+    
+    if (filterType === "none") {
+      setNewAnnouncement(prev => ({ ...prev, selectedUserIds: [] }));
+      return;
+    }
+
+    const now = new Date();
+    const weeks = parseInt(filterType);
+    const cutoff = new Date(now.getTime() - weeks * 7 * 24 * 60 * 60 * 1000);
+    
+    const filteredIds = customers
+      .filter(c => new Date(c.lastVisit) < cutoff)
+      .map(c => c.id);
+      
+    setNewAnnouncement(prev => ({ ...prev, selectedUserIds: filteredIds }));
+  };
+
   const handleDeleteAnnouncement = async (id: string) => {
     if (!confirm("Bu duyuruyu silmek istediğinize emin misiniz?")) return;
     const res = await fetch(`/api/owner/announcements/${id}`, { method: "DELETE" });
@@ -134,8 +157,21 @@ export default function OwnerAnnouncementsPage() {
                 </div>
 
                 {newAnnouncement.target === "selected" && (
-                  <div style={{ maxHeight: "200px", overflowY: "auto", border: "1px solid var(--border-color)", borderRadius: "0.5rem", padding: "0.5rem", backgroundColor: "var(--bg-primary)" }}>
-                    {customers.length === 0 ? <p style={{ fontSize: "0.875rem", color: "var(--text-secondary)" }}>Kayıtlı müşteri bulunamadı.</p> : null}
+                  <div style={{ display: "flex", flexDirection: "column", gap: "1rem" }}>
+                    <div style={{ display: "flex", alignItems: "center", gap: "0.5rem" }}>
+                      <span style={{ fontSize: "0.875rem", fontWeight: "600" }}>Hızlı Seçim:</span>
+                      <select onChange={applyFilter} defaultValue="none" className="form-input" style={{ padding: "0.25rem 0.5rem", width: "auto" }}>
+                        <option value="none">Seçim Yapınız...</option>
+                        <option value="all">Tüm Müşterileri Seç</option>
+                        <option value="1">Son 1 Haftadır Gelmeyenler</option>
+                        <option value="2">Son 2 Haftadır Gelmeyenler</option>
+                        <option value="3">Son 3 Haftadır Gelmeyenler</option>
+                        <option value="4">Son 1 Aydır Gelmeyenler</option>
+                      </select>
+                    </div>
+
+                    <div style={{ maxHeight: "200px", overflowY: "auto", border: "1px solid var(--border-color)", borderRadius: "0.5rem", padding: "0.5rem", backgroundColor: "var(--bg-primary)" }}>
+                      {customers.length === 0 ? <p style={{ fontSize: "0.875rem", color: "var(--text-secondary)" }}>Kayıtlı müşteri bulunamadı.</p> : null}
                     {customers.map(c => (
                       <label key={c.id} style={{ display: "flex", alignItems: "center", gap: "0.5rem", padding: "0.5rem", borderBottom: "1px solid var(--border-color)", cursor: "pointer" }}>
                         <input 
@@ -146,11 +182,17 @@ export default function OwnerAnnouncementsPage() {
                         />
                         <div style={{ flex: 1 }}>
                           <div style={{ fontWeight: "500" }}>{c.name} {c.surname}</div>
-                          <div style={{ fontSize: "0.75rem", color: "var(--text-secondary)" }}>{c.phone} {c.hasPush ? "🔔 (Bildirim Açık)" : ""}</div>
+                          <div style={{ fontSize: "0.75rem", color: "var(--text-secondary)" }}>
+                            {c.phone} {c.hasPush ? "🔔 (Bildirim Açık)" : ""}
+                            <span style={{ display: "block", marginTop: "0.1rem", opacity: 0.7 }}>
+                              Son Ziyaret: {new Date(c.lastVisit).toLocaleDateString("tr-TR")}
+                            </span>
+                          </div>
                         </div>
                       </label>
                     ))}
                   </div>
+                </div>
                 )}
               </div>
             )}
