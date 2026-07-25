@@ -2,7 +2,7 @@
 
 import { useEffect, useState } from "react";
 import { useSession  } from "@/components/AuthProvider";
-import { Users, Gift, Coffee, Calendar, Clock, Activity, PieChart as PieChartIcon, BarChart2, TrendingUp, Sun } from "lucide-react";
+import { Users, Gift, Coffee, Calendar, Clock, Activity, PieChart as PieChartIcon, BarChart2, TrendingUp, Sun, UserMinus } from "lucide-react";
 import { LineChart, Line, BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip as RechartsTooltip, Legend, ResponsiveContainer, PieChart, Pie, Cell } from "recharts";
 import { useTenant } from "@/components/TenantProvider";
 
@@ -21,6 +21,11 @@ export default function OwnerDashboard() {
   const [weeklyStats, setWeeklyStats] = useState<any>(null);
   const [loadingWeekly, setLoadingWeekly] = useState(true);
 
+  // Inactive Customers State
+  const [inactiveWeeks, setInactiveWeeks] = useState(1);
+  const [inactiveCustomers, setInactiveCustomers] = useState<any[]>([]);
+  const [loadingInactive, setLoadingInactive] = useState(true);
+
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
@@ -34,6 +39,10 @@ export default function OwnerDashboard() {
   useEffect(() => {
     fetchWeeklyData(weekOffset);
   }, [weekOffset]);
+
+  useEffect(() => {
+    fetchInactiveCustomers(inactiveWeeks);
+  }, [inactiveWeeks]);
 
   const fetchData = async () => {
     try {
@@ -65,6 +74,20 @@ export default function OwnerDashboard() {
       console.error(e);
     }
     setLoadingWeekly(false);
+  };
+
+  const fetchInactiveCustomers = async (weeksAgo: number) => {
+    setLoadingInactive(true);
+    try {
+      const res = await fetch(`/api/owner/stats/inactive-customers?weeksAgo=${weeksAgo}`);
+      if (res.ok) {
+        const data = await res.json();
+        setInactiveCustomers(data.inactiveCustomers || []);
+      }
+    } catch (e) {
+      console.error(e);
+    }
+    setLoadingInactive(false);
   };
 
   if (loading) return <div style={{ padding: "3rem", textAlign: "center" }}>Yükleniyor...</div>;
@@ -349,6 +372,72 @@ export default function OwnerDashboard() {
           )}
         </div>
 
+      </div>
+
+      {/* 4. İNAKTİF MÜŞTERİ ANALİZİ */}
+      <div className="surface-card" style={{ padding: "1.5rem", marginTop: "2rem" }}>
+        <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: "1.5rem", flexWrap: "wrap", gap: "1rem" }}>
+          <h2 style={{ fontSize: "1.25rem", margin: 0, display: "flex", alignItems: "center", gap: "0.5rem" }}>
+            <UserMinus size={24} color="var(--danger)"/> İnaktif Müşteri Analizi
+          </h2>
+          
+          <select 
+            value={inactiveWeeks} 
+            onChange={(e) => setInactiveWeeks(Number(e.target.value))}
+            style={{ 
+              padding: "0.5rem 1rem", 
+              borderRadius: "0.5rem", 
+              border: "1px solid var(--border-color)",
+              backgroundColor: "var(--bg-primary)",
+              color: "var(--text-primary)",
+              outline: "none",
+              cursor: "pointer"
+            }}
+          >
+            <option value={1}>Son 1 Haftadır Gelmeyenler</option>
+            <option value={2}>Son 2 Haftadır Gelmeyenler</option>
+            <option value={3}>Son 3 Haftadır Gelmeyenler</option>
+            <option value={4}>Son 1 Aydır Gelmeyenler</option>
+          </select>
+        </div>
+
+        {loadingInactive ? (
+          <div style={{ padding: "2rem", textAlign: "center", color: "var(--text-secondary)" }}>Veriler yükleniyor...</div>
+        ) : inactiveCustomers.length > 0 ? (
+          <div style={{ overflowX: "auto" }}>
+            <table style={{ width: "100%", borderCollapse: "collapse", textAlign: "left" }}>
+              <thead>
+                <tr style={{ borderBottom: "2px solid var(--border-color)", color: "var(--text-secondary)" }}>
+                  <th style={{ padding: "1rem" }}>Müşteri Adı</th>
+                  <th style={{ padding: "1rem" }}>Telefon</th>
+                  <th style={{ padding: "1rem" }}>Son Ziyaret</th>
+                  <th style={{ padding: "1rem" }}>Geçen Süre</th>
+                </tr>
+              </thead>
+              <tbody>
+                {inactiveCustomers.map((user: any) => {
+                  const lastVisitDate = new Date(user.lastVisit);
+                  const now = new Date();
+                  const diffTime = Math.abs(now.getTime() - lastVisitDate.getTime());
+                  const diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24));
+
+                  return (
+                    <tr key={user.id} style={{ borderBottom: "1px solid var(--border-color)" }}>
+                      <td style={{ padding: "1rem", fontWeight: "500" }}>{user.name} {user.surname}</td>
+                      <td style={{ padding: "1rem" }}>{user.phone}</td>
+                      <td style={{ padding: "1rem" }}>{lastVisitDate.toLocaleDateString('tr-TR')}</td>
+                      <td style={{ padding: "1rem", color: "var(--danger)", fontWeight: "bold" }}>{diffDays} gün önce</td>
+                    </tr>
+                  )
+                })}
+              </tbody>
+            </table>
+          </div>
+        ) : (
+          <div style={{ padding: "2rem", textAlign: "center", backgroundColor: "rgba(34, 197, 94, 0.05)", color: "var(--success)", borderRadius: "0.5rem", border: "1px solid var(--success)" }}>
+            Harika! Bu kritere uyan inaktif müşteri bulunmuyor.
+          </div>
+        )}
       </div>
 
     </div>
