@@ -4,8 +4,8 @@ self.addEventListener("push", function (event) {
     const title = data.title || "Yeni Bildirim";
     const options = {
       body: data.body || "Yeni bir bildiriminiz var.",
-      icon: data.icon || "/icon.svg",
-      badge: "/icon.svg",
+      icon: data.icon || "/icon-192.png",
+      badge: "/icon-192.png",
       data: data.url || "/"
     };
 
@@ -19,8 +19,3 @@ self.addEventListener("notificationclick", function (event) {
     event.waitUntil(clients.openWindow(event.notification.data));
   }
 });
-
-self.addEventListener("fetch", function(event) {
-  // PWA installability requires a fetch handler
-});
-
