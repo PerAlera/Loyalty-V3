@@ -1,7 +1,7 @@
-import type { MetadataRoute } from "next";
+import { NextResponse } from 'next/server';
 
-export default function manifest(): MetadataRoute.Manifest {
-  return {
+export async function GET() {
+  const manifest = {
     name: "Peralera",
     short_name: "Peralera",
     description: "Peralera Sadakat Sistemi",
@@ -15,13 +15,20 @@ export default function manifest(): MetadataRoute.Manifest {
       {
         src: "/icon-192.png",
         sizes: "192x192",
-        type: "image/png",
+        type: "image/png"
       },
       {
         src: "/icon-512.png",
         sizes: "512x512",
-        type: "image/png",
-      },
-    ],
+        type: "image/png"
+      }
+    ]
   };
+
+  return NextResponse.json(manifest, {
+    headers: {
+      "Content-Type": "application/manifest+json",
+      "Cache-Control": "public, max-age=3600"
+    }
+  });
 }

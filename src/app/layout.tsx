@@ -10,7 +10,7 @@ export const viewport: Viewport = {
 export const metadata: Metadata = {
   title: "Loyalty App - Dijital Sadakat Sistemi",
   description: "Modern, hızlı ve premium dijital sadakat sistemi.",
-  manifest: "/manifest.webmanifest",
+  manifest: "/api/manifest",
   icons: {
     icon: [
       { url: "/icon-192.png", sizes: "192x192", type: "image/png" },
