@@ -3,8 +3,9 @@ generator client {
 }
 
 datasource db {
-  provider = "postgresql"
-  url      = env("DATABASE_URL")
+  provider  = "postgresql"
+  url       = env("DATABASE_URL")
+  directUrl = env("DIRECT_URL")
 }
 
 model Business {
@@ -45,6 +46,7 @@ model User {
   transactions Transaction[]
   qrTokens     QrToken[]
   pushSubscriptions PushSubscription[]
+  targetedAnnouncements Announcement[] @relation("AnnouncementToUser")
 
   @@unique([phone, businessId])
 }
@@ -74,6 +76,8 @@ model Announcement {
   content    String
   businessId String
   business   Business @relation(fields: [businessId], references: [id], onDelete: Cascade)
+  isGlobal   Boolean  @default(true)
+  users      User[]   @relation("AnnouncementToUser")
   createdAt  DateTime @default(now())
 }
 

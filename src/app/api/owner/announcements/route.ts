@@ -30,11 +30,20 @@ export async function POST(req: Request) {
     const business = await prisma.business.findUnique({ where: { id: session.user.businessId as string } });
     if (!business) return NextResponse.json({ error: "Mağaza bulunamadı" }, { status: 404 });
 
+    const isGlobal = target === "all";
+    const userConnections = !isGlobal && selectedUserIds && selectedUserIds.length > 0 
+      ? selectedUserIds.map((id: string) => ({ id })) 
+      : [];
+
     const newAnnouncement = await prisma.announcement.create({
       data: {
         title,
         content,
-        businessId: business.id
+        businessId: business.id,
+        isGlobal,
+        users: {
+          connect: userConnections
+        }
       }
     });
 

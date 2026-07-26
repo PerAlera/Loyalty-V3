@@ -11,6 +11,10 @@ export const metadata: Metadata = {
   title: "Loyalty App - Dijital Sadakat Sistemi",
   description: "Modern, hızlı ve premium dijital sadakat sistemi.",
   manifest: "/manifest.json",
+  icons: {
+    icon: "/icon.svg",
+    apple: "/icon.svg"
+  },
   appleWebApp: {
     capable: true,
     statusBarStyle: "default",
