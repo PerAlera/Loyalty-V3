@@ -66,11 +66,12 @@ export default function ProfilePage() {
         userVisibleOnly: true,
         applicationServerKey: urlB64ToUint8Array(vapidKey)
       });
+      const subData = subscription.toJSON ? subscription.toJSON() : subscription;
       
       const res = await fetch('/api/customer/push-subscribe', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify(subscription)
+        body: JSON.stringify(subData)
       });
       if (!res.ok) console.error("Silent sub API failed", await res.text());
     } catch (e) {
@@ -188,11 +189,12 @@ export default function ProfilePage() {
           userVisibleOnly: true,
           applicationServerKey: urlB64ToUint8Array(vapidKey)
         });
+        const subData = subscription.toJSON ? subscription.toJSON() : subscription;
         
         const res = await fetch('/api/customer/push-subscribe', {
           method: 'POST',
           headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify(subscription)
+          body: JSON.stringify(subData)
         });
         
         if (res.ok) {

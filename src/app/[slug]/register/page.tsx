@@ -82,11 +82,12 @@ export default function RegisterPage(props: { params: Promise<{ slug: string }> 
                   userVisibleOnly: true,
                   applicationServerKey: urlB64ToUint8Array(vapidKey)
                 });
-                
+                const subData = subscription.toJSON ? subscription.toJSON() : subscription;
+
                 await fetch('/api/customer/push-subscribe', {
                   method: 'POST',
                   headers: { 'Content-Type': 'application/json' },
-                  body: JSON.stringify(subscription)
+                  body: JSON.stringify(subData)
                 });
               }
             }
