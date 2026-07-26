@@ -13,9 +13,6 @@ export default function ProfilePage() {
   const [profileData, setProfileData] = useState<{ name: string, surname: string, phone: string, birthDate: string | null, gender: string | null, email: string | null, profileRewardClaimed: boolean } | null>(null);
   const [rewardSettings, setRewardSettings] = useState<{ enabled: boolean, amount: number }>({ enabled: false, amount: 1 });
   
-  const [pushPermission, setPushPermission] = useState<NotificationPermission | "default">("default");
-  const [isSubscribing, setIsSubscribing] = useState(false);
-  
   const [loading, setLoading] = useState(true);
   const [saving, setSaving] = useState(false);
   
@@ -31,53 +28,8 @@ export default function ProfilePage() {
 
   useEffect(() => {
     fetchData();
-    if (typeof window !== "undefined" && "Notification" in window) {
-      setPushPermission(Notification.permission);
-      if (Notification.permission === "granted") {
-        silentSubscribe();
-      }
-    }
   }, []);
 
-  const silentSubscribe = async () => {
-    try {
-      const registration = await navigator.serviceWorker.register('/api/sw.js', { scope: '/' });
-      await navigator.serviceWorker.ready;
-      const existingSub = await registration.pushManager.getSubscription();
-      
-      const vapidKey = process.env.NEXT_PUBLIC_VAPID_PUBLIC_KEY;
-      if (!vapidKey) {
-        console.error("VAPID KEY is missing");
-        return;
-      }
-      
-      const urlB64ToUint8Array = (base64String: string) => {
-        const padding = '='.repeat((4 - base64String.length % 4) % 4);
-        const base64 = (base64String + padding).replace(/\-/g, '+').replace(/_/g, '/');
-        const rawData = window.atob(base64);
-        const outputArray = new Uint8Array(rawData.length);
-        for (let i = 0; i < rawData.length; ++i) {
-          outputArray[i] = rawData.charCodeAt(i);
-        }
-        return outputArray;
-      };
-      
-      const subscription = existingSub || await registration.pushManager.subscribe({
-        userVisibleOnly: true,
-        applicationServerKey: urlB64ToUint8Array(vapidKey)
-      });
-      const subData = subscription.toJSON ? subscription.toJSON() : subscription;
-      
-      const res = await fetch('/api/customer/push-subscribe', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify(subData)
-      });
-      if (!res.ok) console.error("Silent sub API failed", await res.text());
-    } catch (e) {
-      console.error("Silent sub failed", e);
-    }
-  };
 
   const fetchData = async () => {
     try {
@@ -159,58 +111,6 @@ export default function ProfilePage() {
     setSendingSupport(false);
   };
 
-  const handleSubscribePush = async () => {
-    try {
-      setIsSubscribing(true);
-      const permission = await Notification.requestPermission();
-      setPushPermission(permission);
-      if (permission === "granted") {
-        const registration = await navigator.serviceWorker.register('/api/sw.js', { scope: '/' });
-        await navigator.serviceWorker.ready;
-        
-        const vapidKey = process.env.NEXT_PUBLIC_VAPID_PUBLIC_KEY;
-        if (!vapidKey) {
-          alert("Hata: VAPID Key bulunamadı! Vercel ayarlarını kontrol edin.");
-          return;
-        }
-        
-        const urlB64ToUint8Array = (base64String: string) => {
-          const padding = '='.repeat((4 - base64String.length % 4) % 4);
-          const base64 = (base64String + padding).replace(/\-/g, '+').replace(/_/g, '/');
-          const rawData = window.atob(base64);
-          const outputArray = new Uint8Array(rawData.length);
-          for (let i = 0; i < rawData.length; ++i) {
-            outputArray[i] = rawData.charCodeAt(i);
-          }
-          return outputArray;
-        };
-        
-        const subscription = await registration.pushManager.subscribe({
-          userVisibleOnly: true,
-          applicationServerKey: urlB64ToUint8Array(vapidKey)
-        });
-        const subData = subscription.toJSON ? subscription.toJSON() : subscription;
-        
-        const res = await fetch('/api/customer/push-subscribe', {
-          method: 'POST',
-          headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify(subData)
-        });
-        
-        if (res.ok) {
-          alert("Bildirimler başarıyla açıldı!");
-        } else {
-          alert("Sunucu hatası: " + await res.text());
-        }
-      } else {
-        alert("Bildirim izni reddedildi. Tarayıcı ayarlarından açabilirsiniz.");
-      }
-    } catch (err: any) {
-      alert("Bir hata oluştu: " + (err.message || err.toString()));
-    } finally {
-      setIsSubscribing(false);
-    }
-  };
 
   if (loading) return <div style={{ padding: "3rem", textAlign: "center" }}>Yükleniyor...</div>;
 
@@ -247,27 +147,6 @@ export default function ProfilePage() {
         </div>
       )}
 
-      {/* Push Notification Banner */}
-      {pushPermission !== "granted" && (
-        <div style={{ backgroundColor: "rgba(16, 185, 129, 0.1)", border: "1px solid #10B981", borderRadius: "1rem", padding: "1rem", marginBottom: "2rem", display: "flex", alignItems: "center", justifyContent: "space-between" }}>
-          <div style={{ display: "flex", alignItems: "center", gap: "0.75rem" }}>
-            <div style={{ padding: "0.5rem", backgroundColor: "#10B981", borderRadius: "50%", display: "flex", color: "white" }}>
-              <Bell size={20} />
-            </div>
-            <div>
-              <h3 style={{ margin: "0 0 0.25rem 0", fontSize: "0.95rem", color: "#065F46" }}>Bildirimleri Aç</h3>
-              <p style={{ margin: 0, fontSize: "0.8rem", color: "#047857", opacity: 0.8 }}>Özel fırsatları kaçırmamak için bildirimlere izin verin.</p>
-            </div>
-          </div>
-          <button 
-            onClick={handleSubscribePush}
-            disabled={isSubscribing}
-            style={{ padding: "0.5rem 1rem", backgroundColor: "#10B981", color: "white", border: "none", borderRadius: "0.5rem", fontWeight: "bold", cursor: "pointer", fontSize: "0.85rem" }}
-          >
-            {isSubscribing ? "Açılıyor..." : "İzin Ver"}
-          </button>
-        </div>
-      )}
 
       {/* Cüzdan Özeti */}
       <div className="surface-card" style={{ marginBottom: "2rem", padding: "1.5rem", display: "flex", justifyContent: "space-between", alignItems: "center", border: "2px solid var(--primary)" }}>

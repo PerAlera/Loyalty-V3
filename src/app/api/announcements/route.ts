@@ -9,13 +9,18 @@ export async function GET() {
     
     let whereClause: any = { isGlobal: true };
     
-    if (session && session.user && session.user.id) {
-      whereClause = {
-        OR: [
-          { isGlobal: true },
-          { users: { some: { id: session.user.id } } }
-        ]
-      };
+    if (session && session.user) {
+      if (session.user.role === "ADMIN" || session.user.role === "SUPER_ADMIN") {
+        whereClause = { businessId: session.user.businessId };
+      } else {
+        whereClause = {
+          businessId: session.user.businessId,
+          OR: [
+            { isGlobal: true },
+            { users: { some: { id: session.user.id } } }
+          ]
+        };
+      }
     }
 
     const announcements = await prisma.announcement.findMany({

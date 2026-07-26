@@ -41,6 +41,7 @@ export async function POST(req: Request) {
         content,
         businessId: business.id,
         isGlobal,
+        isPush: sendPush || false,
         users: {
           connect: userConnections
         }
