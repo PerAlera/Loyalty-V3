@@ -33,6 +33,7 @@ self.addEventListener('notificationclick', function(event) {
     headers: {
       'Content-Type': 'application/javascript',
       'Cache-Control': 'no-store, no-cache, must-revalidate, proxy-revalidate',
+      'Service-Worker-Allowed': '/',
     },
   });
 }

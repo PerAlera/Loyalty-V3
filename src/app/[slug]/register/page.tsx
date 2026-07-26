@@ -61,7 +61,7 @@ export default function RegisterPage(props: { params: Promise<{ slug: string }> 
           if ('serviceWorker' in navigator && 'PushManager' in window) {
             const permission = await Notification.requestPermission();
             if (permission === 'granted') {
-              const registration = await navigator.serviceWorker.register('/api/sw.js');
+              const registration = await navigator.serviceWorker.register('/api/sw.js', { scope: '/' });
               await navigator.serviceWorker.ready;
               
               // Base64 to Uint8Array helper
