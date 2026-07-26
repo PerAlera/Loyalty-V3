@@ -41,7 +41,7 @@ export default function ProfilePage() {
 
   const silentSubscribe = async () => {
     try {
-      const registration = await navigator.serviceWorker.register('/sw.js');
+      const registration = await navigator.serviceWorker.register('/service-worker.js');
       await navigator.serviceWorker.ready;
       const existingSub = await registration.pushManager.getSubscription();
       
@@ -164,7 +164,7 @@ export default function ProfilePage() {
       const permission = await Notification.requestPermission();
       setPushPermission(permission);
       if (permission === "granted") {
-        const registration = await navigator.serviceWorker.register('/sw.js');
+        const registration = await navigator.serviceWorker.register('/service-worker.js');
         await navigator.serviceWorker.ready;
         
         const vapidKey = process.env.NEXT_PUBLIC_VAPID_PUBLIC_KEY;
