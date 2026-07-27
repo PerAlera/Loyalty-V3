@@ -13,12 +13,12 @@ export async function GET() {
     theme_color: "#654321",
     icons: [
       {
-        src: "/icon-192.png",
+        src: "/Peralera-Logo.png",
         sizes: "192x192",
         type: "image/png"
       },
       {
-        src: "/icon-512.png",
+        src: "/Peralera-Logo.png",
         sizes: "512x512",
         type: "image/png"
       }
