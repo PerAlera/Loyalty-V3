@@ -7,8 +7,8 @@ self.addEventListener('push', function(event) {
     const data = event.data.json();
     const options = {
       body: data.body,
-      icon: data.icon || '/icon-192.png',
-      badge: '/icon-192.png',
+      icon: data.icon || '/Peralera-Logo.png',
+      badge: '/Peralera-Logo.png',
       vibrate: [100, 50, 100],
       data: {
         dateOfArrival: Date.now(),

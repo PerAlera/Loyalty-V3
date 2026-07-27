@@ -68,7 +68,7 @@ export async function POST(req: Request) {
       const payload = JSON.stringify({
         title: title,
         body: content,
-        icon: business.logo || "/icon.svg",
+        icon: business.logo || "/Peralera-Logo.png",
         url: "/" // Redirect to home on click
       });
 
