@@ -11,15 +11,6 @@ export const metadata: Metadata = {
   title: "Loyalty App - Dijital Sadakat Sistemi",
   description: "Modern, hızlı ve premium dijital sadakat sistemi.",
   manifest: "/api/manifest",
-  icons: {
-    icon: [
-      { url: "/Peralera-Logo.png", sizes: "192x192", type: "image/png" },
-      { url: "/Peralera-Logo.png", sizes: "512x512", type: "image/png" }
-    ],
-    apple: [
-      { url: "/Peralera-Logo.png", sizes: "180x180", type: "image/png" }
-    ]
-  },
   appleWebApp: {
     capable: true,
     statusBarStyle: "default",
