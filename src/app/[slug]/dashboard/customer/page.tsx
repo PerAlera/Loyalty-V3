@@ -10,7 +10,7 @@ import { useRouter } from "next/navigation";
 import { Scanner } from "@yudiel/react-qr-scanner";
 import { QRCodeSVG } from "qrcode.react";
 
-type ModalType = "NONE" | "SCAN" | "REDEEM" | "CAMPAIGNS" | "SUCCESS" | "NOTIFICATIONS";
+type ModalType = "NONE" | "SCAN" | "REDEEM" | "CAMPAIGNS" | "SUCCESS" | "NOTIFICATIONS" | "INSTALL_PWA";
 
 export default function CustomerHome() {
   const { data: session } = useSession();
@@ -32,16 +32,23 @@ export default function CustomerHome() {
   const [redeemToken, setRedeemToken] = useState<string | null>(null);
   const [redeemType, setRedeemType] = useState<"COFFEE" | "FOOD" | null>(null);
   const [activeTab, setActiveTab] = useState<"COFFEE" | "FOOD">("COFFEE");
+  const [deviceOS, setDeviceOS] = useState<"iOS" | "Android" | "Desktop">("Desktop");
 
   // Polling ref
   const pollInterval = useRef<NodeJS.Timeout | null>(null);
 
   useEffect(() => {
     fetchData();
-    if (typeof window !== "undefined" && "Notification" in window) {
-      setPushPermission(Notification.permission);
-      if (Notification.permission === "granted") {
-        silentSubscribe();
+    if (typeof window !== "undefined") {
+      const ua = navigator.userAgent || navigator.vendor || (window as any).opera;
+      if (/android/i.test(ua)) setDeviceOS("Android");
+      else if (/iPad|iPhone|iPod/.test(ua) && !(window as any).MSStream) setDeviceOS("iOS");
+      
+      if ("Notification" in window) {
+        setPushPermission(Notification.permission);
+        if (Notification.permission === "granted") {
+          silentSubscribe();
+        }
       }
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
@@ -84,6 +91,11 @@ export default function CustomerHome() {
   };
 
   const handleSubscribePush = async () => {
+    if (typeof window === "undefined" || !("Notification" in window)) {
+      setModalType("INSTALL_PWA");
+      return;
+    }
+    
     try {
       setIsSubscribing(true);
       const permission = await Notification.requestPermission();
@@ -124,7 +136,11 @@ export default function CustomerHome() {
         if (res.ok) alert("Bildirimler başarıyla açıldı!");
       }
     } catch (err: any) {
-      alert("Bir hata oluştu: " + (err.message || err.toString()));
+      if (err.name === 'NotSupportedError' || err.message?.includes("Can't find variable: Notification")) {
+        setModalType("INSTALL_PWA");
+      } else {
+        alert("Bir hata oluştu: " + (err.message || err.toString()));
+      }
     } finally {
       setIsSubscribing(false);
     }
@@ -707,6 +723,53 @@ export default function CustomerHome() {
                 ) : (
                   <p style={{ color: "var(--text-secondary)", fontSize: "0.875rem", padding: "1rem" }}>Şu an yeni bildiriminiz bulunmuyor.</p>
                 )}
+              </>
+            )}
+
+            {modalType === "INSTALL_PWA" && (
+              <>
+                <h2 className="font-caveat" style={{ fontSize: "1.8rem", marginBottom: "1rem" }}>Uygulamayı Yükleyin</h2>
+                <div style={{ textAlign: "left", fontSize: "0.85rem", color: "var(--text-secondary)", display: "flex", flexDirection: "column", gap: "1rem" }}>
+                  <p>
+                    Bildirimleri alabilmek ve daha iyi bir deneyim yaşamak için uygulamayı cihazınızın <strong>Ana Ekranına</strong> eklemeniz gerekmektedir.
+                  </p>
+                  
+                  {deviceOS === "iOS" ? (
+                     <div style={{ backgroundColor: "#F3F4F6", padding: "1rem", borderRadius: "0.5rem", border: "1px solid #E5E7EB" }}>
+                       <h3 style={{ fontSize: "0.9rem", color: "#111827", marginBottom: "0.5rem", fontWeight: "bold" }}>iOS (iPhone/iPad) İçin:</h3>
+                       <ol style={{ paddingLeft: "1.2rem", margin: 0, display: "flex", flexDirection: "column", gap: "0.5rem" }}>
+                         <li>Alt kısımdaki veya üst kısımdaki <strong>Paylaş</strong> (kareden çıkan ok) ikonuna dokunun.</li>
+                         <li>Açılan menüde aşağı doğru kaydırın.</li>
+                         <li><strong>Ana Ekrana Ekle</strong> (Add to Home Screen) seçeneğine dokunun.</li>
+                         <li>Eklenen uygulamayı ana ekranınızdan açarak bildirimlere izin verebilirsiniz.</li>
+                       </ol>
+                     </div>
+                  ) : deviceOS === "Android" ? (
+                     <div style={{ backgroundColor: "#F3F4F6", padding: "1rem", borderRadius: "0.5rem", border: "1px solid #E5E7EB" }}>
+                       <h3 style={{ fontSize: "0.9rem", color: "#111827", marginBottom: "0.5rem", fontWeight: "bold" }}>Android İçin:</h3>
+                       <ol style={{ paddingLeft: "1.2rem", margin: 0, display: "flex", flexDirection: "column", gap: "0.5rem" }}>
+                         <li>Tarayıcının sağ üst köşesindeki <strong>Üç Nokta</strong> ikonuna dokunun.</li>
+                         <li>Açılan menüde <strong>Ana Ekrana Ekle</strong> (Add to Home screen) veya <strong>Uygulamayı Yükle</strong> seçeneğine dokunun.</li>
+                         <li>Eklenen uygulamayı ana ekranınızdan açarak bildirimlere izin verebilirsiniz.</li>
+                       </ol>
+                     </div>
+                  ) : (
+                     <div style={{ backgroundColor: "#F3F4F6", padding: "1rem", borderRadius: "0.5rem", border: "1px solid #E5E7EB" }}>
+                       <h3 style={{ fontSize: "0.9rem", color: "#111827", marginBottom: "0.5rem", fontWeight: "bold" }}>Bilgisayar İçin:</h3>
+                       <ol style={{ paddingLeft: "1.2rem", margin: 0, display: "flex", flexDirection: "column", gap: "0.5rem" }}>
+                         <li>Tarayıcınızın adres çubuğunun sağ tarafındaki <strong>Uygulamayı Yükle</strong> (veya indirme) ikonuna tıklayın.</li>
+                         <li>Yükledikten sonra uygulamayı açarak bildirimlere izin verebilirsiniz.</li>
+                       </ol>
+                     </div>
+                  )}
+                  
+                  <button 
+                    onClick={closeModal}
+                    style={{ padding: "0.75rem", backgroundColor: "var(--primary)", color: "white", border: "none", borderRadius: "0.5rem", fontWeight: "bold", cursor: "pointer", marginTop: "0.5rem" }}
+                  >
+                    Anladım
+                  </button>
+                </div>
               </>
             )}
 
