@@ -3,7 +3,7 @@
 import { useEffect, useState, useRef } from "react";
 import { useSession  } from "@/components/AuthProvider";
 import { useTenant } from "@/components/TenantProvider";
-import { User, Check, X, Gift, Coffee, Bell, Trash2 } from "lucide-react";
+import { User, Check, X, Gift, Coffee, Bell, Trash2, Share, MoreVertical } from "lucide-react";
 import Link from "next/link";
 import Image from "next/image";
 import { useRouter } from "next/navigation";
@@ -728,37 +728,41 @@ export default function CustomerHome() {
 
             {modalType === "INSTALL_PWA" && (
               <>
-                <h2 className="font-caveat" style={{ fontSize: "1.8rem", marginBottom: "1rem" }}>Uygulamayı Yükleyin</h2>
+                <h2 className="font-caveat" style={{ fontSize: "1.8rem", marginBottom: "1rem" }}>Ana Ekrana Ekle</h2>
                 <div style={{ textAlign: "left", fontSize: "0.85rem", color: "var(--text-secondary)", display: "flex", flexDirection: "column", gap: "1rem" }}>
                   <p>
-                    Bildirimleri alabilmek ve daha iyi bir deneyim yaşamak için uygulamayı cihazınızın <strong>Ana Ekranına</strong> eklemeniz gerekmektedir.
+                    Bildirimleri alabilmek ve puanlarınızı daha kolay takip edebilmek için bu web sitesini cihazınızın <strong>Ana Ekranına</strong> eklemeniz gerekmektedir. Cihazınıza herhangi bir dosya yüklenmeyecektir.
                   </p>
                   
                   {deviceOS === "iOS" ? (
                      <div style={{ backgroundColor: "#F3F4F6", padding: "1rem", borderRadius: "0.5rem", border: "1px solid #E5E7EB" }}>
-                       <h3 style={{ fontSize: "0.9rem", color: "#111827", marginBottom: "0.5rem", fontWeight: "bold" }}>iOS (iPhone/iPad) İçin:</h3>
-                       <ol style={{ paddingLeft: "1.2rem", margin: 0, display: "flex", flexDirection: "column", gap: "0.5rem" }}>
-                         <li>Alt kısımdaki veya üst kısımdaki <strong>Paylaş</strong> (kareden çıkan ok) ikonuna dokunun.</li>
+                       <h3 style={{ fontSize: "0.9rem", color: "#111827", marginBottom: "0.75rem", fontWeight: "bold" }}>iOS (iPhone/iPad) İçin:</h3>
+                       <ol style={{ paddingLeft: "1.2rem", margin: 0, display: "flex", flexDirection: "column", gap: "0.75rem" }}>
+                         <li style={{ display: "flex", alignItems: "center", gap: "0.25rem" }}>
+                           Alt menüdeki <strong>Paylaş</strong> <Share size={16} /> ikonuna dokunun.
+                         </li>
                          <li>Açılan menüde aşağı doğru kaydırın.</li>
                          <li><strong>Ana Ekrana Ekle</strong> (Add to Home Screen) seçeneğine dokunun.</li>
-                         <li>Eklenen uygulamayı ana ekranınızdan açarak bildirimlere izin verebilirsiniz.</li>
+                         <li>Ana ekrana eklenen web sitesini açarak bildirimlere izin verebilirsiniz.</li>
                        </ol>
                      </div>
                   ) : deviceOS === "Android" ? (
                      <div style={{ backgroundColor: "#F3F4F6", padding: "1rem", borderRadius: "0.5rem", border: "1px solid #E5E7EB" }}>
-                       <h3 style={{ fontSize: "0.9rem", color: "#111827", marginBottom: "0.5rem", fontWeight: "bold" }}>Android İçin:</h3>
-                       <ol style={{ paddingLeft: "1.2rem", margin: 0, display: "flex", flexDirection: "column", gap: "0.5rem" }}>
-                         <li>Tarayıcının sağ üst köşesindeki <strong>Üç Nokta</strong> ikonuna dokunun.</li>
-                         <li>Açılan menüde <strong>Ana Ekrana Ekle</strong> (Add to Home screen) veya <strong>Uygulamayı Yükle</strong> seçeneğine dokunun.</li>
-                         <li>Eklenen uygulamayı ana ekranınızdan açarak bildirimlere izin verebilirsiniz.</li>
+                       <h3 style={{ fontSize: "0.9rem", color: "#111827", marginBottom: "0.75rem", fontWeight: "bold" }}>Android İçin:</h3>
+                       <ol style={{ paddingLeft: "1.2rem", margin: 0, display: "flex", flexDirection: "column", gap: "0.75rem" }}>
+                         <li style={{ display: "flex", alignItems: "center", gap: "0.25rem" }}>
+                           Tarayıcının sağ üst köşesindeki <strong>Seçenekler</strong> <MoreVertical size={16} /> ikonuna dokunun.
+                         </li>
+                         <li>Açılan menüde <strong>Ana Ekrana Ekle</strong> (Add to Home screen) seçeneğine dokunun.</li>
+                         <li>Ana ekrana eklenen web sitesini açarak bildirimlere izin verebilirsiniz.</li>
                        </ol>
                      </div>
                   ) : (
                      <div style={{ backgroundColor: "#F3F4F6", padding: "1rem", borderRadius: "0.5rem", border: "1px solid #E5E7EB" }}>
-                       <h3 style={{ fontSize: "0.9rem", color: "#111827", marginBottom: "0.5rem", fontWeight: "bold" }}>Bilgisayar İçin:</h3>
-                       <ol style={{ paddingLeft: "1.2rem", margin: 0, display: "flex", flexDirection: "column", gap: "0.5rem" }}>
-                         <li>Tarayıcınızın adres çubuğunun sağ tarafındaki <strong>Uygulamayı Yükle</strong> (veya indirme) ikonuna tıklayın.</li>
-                         <li>Yükledikten sonra uygulamayı açarak bildirimlere izin verebilirsiniz.</li>
+                       <h3 style={{ fontSize: "0.9rem", color: "#111827", marginBottom: "0.75rem", fontWeight: "bold" }}>Bilgisayar İçin:</h3>
+                       <ol style={{ paddingLeft: "1.2rem", margin: 0, display: "flex", flexDirection: "column", gap: "0.75rem" }}>
+                         <li>Tarayıcınızın adres çubuğunun sağ tarafındaki <strong>Kısayol Oluştur</strong> (veya indirme) ikonuna tıklayın.</li>
+                         <li>Oluşturulan kısayolu açarak bildirimlere izin verebilirsiniz.</li>
                        </ol>
                      </div>
                   )}
