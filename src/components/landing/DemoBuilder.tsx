@@ -8,6 +8,13 @@ const DemoBuilder = () => {
   const [logo, setLogo] = useState<string>(''); // No default logo
   const [mascot, setMascot] = useState<string>('/mascot1.png');
   const [primaryColor, setPrimaryColor] = useState('#5C4033');
+  
+  const [name, setName] = useState('');
+  const [businessName, setBusinessName] = useState('');
+  const [email, setEmail] = useState('');
+  const [phone, setPhone] = useState('');
+  const [isSubmitting, setIsSubmitting] = useState(false);
+  const [submitSuccess, setSubmitSuccess] = useState(false);
 
   const logoInputRef = useRef<HTMLInputElement>(null);
   const mascotInputRef = useRef<HTMLInputElement>(null);
@@ -26,14 +33,34 @@ const DemoBuilder = () => {
     }
   };
 
-  const handleRequestDemo = () => {
-    const subject = encodeURIComponent("Peralera Demo Talebi");
+  const handleRequestDemo = async () => {
+    if (!name || !email) {
+      alert("Lütfen adınızı ve e-posta adresinizi girin.");
+      return;
+    }
     
-    const logoText = logo.startsWith('blob:') ? "Özel Logo Yüklendi (Lütfen dosyayı bu e-postaya ekleyin)" : (logo || "Seçilmedi");
-    const mascotText = mascot.startsWith('blob:') ? "Özel Maskot Yüklendi (Lütfen dosyayı bu e-postaya ekleyin)" : mascot;
-    
-    const body = encodeURIComponent(`Merhaba,\n\nAşağıdaki seçimlerle bir demo uygulaması başlatmak istiyorum:\n\nLogo: ${logoText}\nMaskot: ${mascotText}\nAna Renk: ${primaryColor}\n\nİletişime geçmenizi bekliyorum.`);
-    window.location.href = `mailto:hello@peralera.com?subject=${subject}&body=${body}`;
+    setIsSubmitting(true);
+    try {
+      const response = await fetch('/api/contact', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          name, businessName, email, phone, logo, mascot, primaryColor
+        }),
+      });
+      
+      const data = await response.json();
+      if (data.success) {
+        setSubmitSuccess(true);
+      } else {
+        alert("Gönderim başarısız: " + data.message);
+      }
+    } catch (error) {
+      console.error(error);
+      alert("Bir hata oluştu. Lütfen tekrar deneyin.");
+    } finally {
+      setIsSubmitting(false);
+    }
   };
 
   return (
@@ -154,11 +181,27 @@ const DemoBuilder = () => {
             </div>
           </div>
 
-          <div className="form-action-bottom">
-             <button className="btn btn-primary large-action" onClick={handleRequestDemo}>
-                Bu Tasarımla İletişime Geç &rarr;
+          <div className="form-section">
+            <h3>4. İletişim Bilgileriniz</h3>
+            <div style={{ display: 'flex', flexDirection: 'column', gap: '1rem', marginTop: '1rem' }}>
+              <input type="text" placeholder="Adınız Soyadınız" value={name} onChange={e => setName(e.target.value)} style={{ padding: '0.8rem', borderRadius: '8px', border: '1px solid var(--border-color)', width: '100%' }} />
+              <input type="text" placeholder="İşletme Adınız" value={businessName} onChange={e => setBusinessName(e.target.value)} style={{ padding: '0.8rem', borderRadius: '8px', border: '1px solid var(--border-color)', width: '100%' }} />
+              <input type="email" placeholder="E-posta Adresiniz" value={email} onChange={e => setEmail(e.target.value)} style={{ padding: '0.8rem', borderRadius: '8px', border: '1px solid var(--border-color)', width: '100%' }} />
+              <input type="tel" placeholder="Telefon Numaranız" value={phone} onChange={e => setPhone(e.target.value)} style={{ padding: '0.8rem', borderRadius: '8px', border: '1px solid var(--border-color)', width: '100%' }} />
+            </div>
+          </div>
+
+          <div className="form-action-bottom" style={{ marginTop: '2rem' }}>
+            {submitSuccess ? (
+              <div style={{ padding: '1rem', backgroundColor: 'var(--success-bg)', color: 'var(--success-color)', borderRadius: '8px', textAlign: 'center', fontWeight: '500' }}>
+                Talebiniz başarıyla alındı! Ekibimiz en kısa sürede sizinle iletişime geçecektir.
+              </div>
+            ) : (
+             <button className="btn btn-primary large-action" onClick={handleRequestDemo} disabled={isSubmitting} style={{ width: '100%', opacity: isSubmitting ? 0.7 : 1 }}>
+                {isSubmitting ? 'Gönderiliyor...' : 'Bu Tasarımla İletişime Geç \u2192'}
              </button>
-             <p className="helper-text">Seçimleriniz e-posta ile ekibimize iletilecektir. (Kendi yüklediğiniz dosyaları açılan e-postaya eklemeyi unutmayın)</p>
+            )}
+             {!submitSuccess && <p className="helper-text" style={{ marginTop: '0.5rem', textAlign: 'center', fontSize: '0.85rem', color: 'var(--text-secondary)' }}>Talebiniz ekibimize anında iletilecektir.</p>}
           </div>
         </div>
 
