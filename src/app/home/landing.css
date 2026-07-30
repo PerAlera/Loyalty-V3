@@ -40,6 +40,7 @@
 *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 html { scroll-behavior: smooth; font-size: 16px; }
 body { overflow-x: hidden; }
+img { max-width: 100%; height: auto; display: block; }
 
 .landing-wrapper {
   font-family: var(--font-family);
@@ -270,7 +271,9 @@ h1, h2, h3, h4 { font-weight: 800; line-height: 1.1; letter-spacing: -0.03em; }
 .option-card {
   width: 140px; height: 140px; border-radius: var(--radius-md); border: 2px solid var(--border-color);
   display: flex; align-items: center; justify-content: center; cursor: pointer; transition: all var(--transition-fast);
+  overflow: hidden; padding: 1rem;
 }
+.option-card img { max-width: 100%; max-height: 100%; object-fit: contain; }
 .option-card:hover { border-color: var(--accent-color); background: var(--accent-light); }
 .option-card.selected { border-color: var(--accent-color); background: var(--accent-light); box-shadow: 0 0 0 2px var(--accent-color); }
 .color-options { display: flex; gap: 1rem; }
