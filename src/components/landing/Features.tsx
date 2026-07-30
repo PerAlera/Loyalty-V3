@@ -1,17 +1,18 @@
 import React from 'react';
+import { Smartphone, Wallet, Gift } from 'lucide-react';
 
 const Features = () => {
   return (
     <section id="how-it-works" className="features-step section container">
-      <div className="features-header text-center">
-        <h2>Pürüzsüz Bir Müşteri Deneyimi</h2>
+      <div className="features-header text-center fade-in-up">
+        <h2 className="text-gradient">Pürüzsüz Bir Müşteri Deneyimi</h2>
         <p>Müşterileriniz için en zahmetsiz, işletmeniz için en verimli sadakat süreci.</p>
       </div>
 
-      <div className="steps-container">
-        <div className="step">
+      <div className="steps-container mt-12">
+        <div className="step card-hover">
           <div className="step-icon-wrapper">
-            <span className="step-icon">📱</span>
+            <Smartphone className="w-8 h-8" style={{ color: 'var(--accent-color)' }} />
           </div>
           <div className="step-number">1</div>
           <h3>QR Teknolojisi</h3>
@@ -20,9 +21,9 @@ const Features = () => {
         
         <div className="step-connector"></div>
 
-        <div className="step">
+        <div className="step card-hover">
           <div className="step-icon-wrapper">
-            <span className="step-icon">☕</span>
+            <Wallet className="w-8 h-8" style={{ color: 'var(--accent-color)' }} />
           </div>
           <div className="step-number">2</div>
           <h3>Dijital Cüzdan</h3>
@@ -31,9 +32,9 @@ const Features = () => {
         
         <div className="step-connector"></div>
 
-        <div className="step">
+        <div className="step card-hover">
           <div className="step-icon-wrapper">
-            <span className="step-icon">🎁</span>
+            <Gift className="w-8 h-8" style={{ color: 'var(--accent-color)' }} />
           </div>
           <div className="step-number">3</div>
           <h3>Akıllı Ödüller</h3>

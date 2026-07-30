@@ -2,52 +2,34 @@
 
 import React from 'react';
 import Link from 'next/link';
+import { Rocket, ChevronRight, Star } from 'lucide-react';
 
 const Hero = () => {
   return (
     <section className="hero section container">
-      <div className="hero-content">
-        <div className="badge">
-          <span>🚀</span> Yeni Nesil Sadakat Yönetimi
+      <div className="hero-content text-center fade-in-up">
+        <div className="badge mx-auto mb-6">
+          <Rocket className="w-4 h-4 mr-2 inline" /> Yeni Nesil Sadakat Yönetimi
         </div>
         <h1 className="hero-title text-gradient">
           Müşteri Sadakatini <br /> Geleceğe Taşıyın.
         </h1>
-        <p className="hero-subtitle">
+        <p className="hero-subtitle mx-auto">
           Geleneksel kağıt kartları unutun. İşletmeniz için veri odaklı, %100 dijital sadakat ve kampanya yönetimi ile müşterilerinizi kalıcı hale getirin.
         </p>
         
-        <ul className="hero-checklist">
-          <li><span className="check-icon">✓</span> Hızlı Entegrasyon</li>
-          <li><span className="check-icon">✓</span> Gelişmiş Analitik</li>
-          <li><span className="check-icon">✓</span> Kesintisiz Deneyim</li>
-        </ul>
-
-        <div className="hero-actions">
-          <Link href="/demo" className="btn btn-primary">Ücretsiz Demo Al &rarr;</Link>
-          <a href="#how-it-works" className="btn btn-ghost">Nasıl Çalışır? &rsaquo;</a>
+        <div className="hero-actions justify-center mt-8">
+          <Link href="/demo" className="btn btn-primary btn-lg">Ücretsiz Demo Al <ChevronRight className="w-5 h-5 ml-1 inline" /></Link>
+          <a href="#how-it-works" className="btn btn-secondary btn-lg">Nasıl Çalışır?</a>
         </div>
 
-        <div className="hero-social-proof">
-          <div className="avatars">
-            <div className="avatar">👩</div>
-            <div className="avatar">👨</div>
-            <div className="avatar">🧑</div>
-            <div className="avatar">👧</div>
+        <div className="hero-social-proof justify-center mt-12">
+          <div className="rating flex items-center justify-center gap-3">
+            <div className="stars flex" style={{ color: '#F59E0B' }}>
+              {[...Array(5)].map((_, i) => <Star key={i} className="w-5 h-5 fill-current" />)}
+            </div>
+            <p className="font-medium" style={{ color: 'var(--text-secondary)' }}>Seçkin işletmeler PerAlera ile büyüyor.</p>
           </div>
-          <div className="rating">
-            <div className="stars">⭐⭐⭐⭐⭐</div>
-            <p>Seçkin işletmeler PerAlera ile büyüyor.</p>
-          </div>
-        </div>
-      </div>
-      
-      <div className="hero-images">
-        <div className="mockup-phone">
-          <img src="/hero_phone.png" alt="Peralera mobile app showing coffee bean rewards" />
-        </div>
-        <div className="mockup-qr-stand">
-          <img src="/qr_stand.png" alt="Peralera QR Code Stand on a cafe table" />
         </div>
       </div>
     </section>
