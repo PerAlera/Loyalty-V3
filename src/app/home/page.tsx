@@ -6,7 +6,6 @@ import Features from '@/components/landing/Features';
 import DashboardFeature from '@/components/landing/DashboardFeature';
 import AppFeature from '@/components/landing/AppFeature';
 import Testimonials from '@/components/landing/Testimonials';
-import Pricing from '@/components/landing/Pricing';
 import FAQ from '@/components/landing/FAQ';
 import CTA from '@/components/landing/CTA';
 import Footer from '@/components/landing/Footer';
@@ -24,7 +23,6 @@ export default function HomeLandingPage() {
           <AppFeature />
           <Features />
           <Testimonials />
-          <Pricing />
           <FAQ />
           <CTA />
         </main>

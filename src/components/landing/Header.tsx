@@ -14,7 +14,6 @@ const Header = () => {
         <ul>
           <li><Link href="#features">Özellikler</Link></li>
           <li><Link href="#how-it-works">Nasıl Çalışır?</Link></li>
-          <li><Link href="#pricing">Fiyatlandırma</Link></li>
           <li><Link href="#testimonials">Referanslar</Link></li>
           <li><Link href="#faq">SSS</Link></li>
         </ul>
