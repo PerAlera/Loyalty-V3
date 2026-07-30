@@ -22,14 +22,24 @@ const Hero = () => {
           <Link href="/demo" className="btn btn-primary btn-lg">Ücretsiz Demo Al <ChevronRight className="w-5 h-5 ml-1 inline" /></Link>
           <a href="#how-it-works" className="btn btn-secondary btn-lg">Nasıl Çalışır?</a>
         </div>
-
-        <div className="hero-social-proof justify-center mt-12">
-          <div className="rating flex items-center justify-center gap-3">
-            <div className="stars flex" style={{ color: '#F59E0B' }}>
-              {[...Array(5)].map((_, i) => <Star key={i} className="w-5 h-5 fill-current" />)}
-            </div>
-            <p className="font-medium" style={{ color: 'var(--text-secondary)' }}>Seçkin işletmeler PerAlera ile büyüyor.</p>
+      </div>
+      
+      {/* Visual Product Representation */}
+      <div className="hero-visual fade-in-up mt-12 mx-auto" style={{ maxWidth: '900px', animationDelay: '0.4s' }}>
+        <div className="mockup-browser">
+          <div className="mockup-browser-header">
+            <div className="mockup-dots"><span></span><span></span><span></span></div>
           </div>
+          <img src="/dashboard.png" alt="Peralera Dashboard Preview" className="w-full h-auto block" />
+        </div>
+      </div>
+
+      <div className="hero-social-proof justify-center mt-12">
+        <div className="rating flex items-center justify-center gap-3">
+          <div className="stars flex" style={{ color: '#F59E0B' }}>
+            {[...Array(5)].map((_, i) => <Star key={i} className="w-5 h-5 fill-current" />)}
+          </div>
+          <p className="font-medium" style={{ color: 'var(--text-secondary)' }}>Seçkin işletmeler PerAlera ile büyüyor.</p>
         </div>
       </div>
     </section>
