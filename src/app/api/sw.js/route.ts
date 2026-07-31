@@ -27,6 +27,39 @@ self.addEventListener('notificationclick', function(event) {
     clients.openWindow('/')
   );
 });
+
+const CACHE_NAME = 'peralera-offline-v1';
+const OFFLINE_URL = '/';
+
+self.addEventListener('install', (event) => {
+  event.waitUntil(
+    caches.open(CACHE_NAME).then((cache) => {
+      // Just cache the root page for offline fallback
+      return cache.add(OFFLINE_URL).catch(() => {});
+    })
+  );
+  self.skipWaiting();
+});
+
+self.addEventListener('activate', (event) => {
+  event.waitUntil(self.clients.claim());
+});
+
+self.addEventListener('fetch', (event) => {
+  if (event.request.mode === 'navigate') {
+    event.respondWith(
+      fetch(event.request).catch(() => {
+        return caches.match(OFFLINE_URL).then((response) => {
+          if (response) {
+            return response;
+          }
+          // If not in cache, let it fail (will show browser error)
+          return fetch(event.request);
+        });
+      })
+    );
+  }
+});
   `;
 
   return new NextResponse(sw, {

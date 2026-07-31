@@ -22,6 +22,13 @@ export async function GET(request: Request) {
     }
   }
 
+  let iconType = "image/png";
+  if (iconUrl.endsWith(".svg")) {
+    iconType = "image/svg+xml";
+  } else if (iconUrl.endsWith(".jpg") || iconUrl.endsWith(".jpeg")) {
+    iconType = "image/jpeg";
+  }
+
   const manifest = {
     name: name,
     short_name: name,
@@ -36,12 +43,12 @@ export async function GET(request: Request) {
       {
         src: iconUrl,
         sizes: "192x192",
-        type: "image/png"
+        type: iconType
       },
       {
         src: iconUrl,
         sizes: "512x512",
-        type: "image/png"
+        type: iconType
       }
     ]
   };
@@ -49,7 +56,7 @@ export async function GET(request: Request) {
   return NextResponse.json(manifest, {
     headers: {
       "Content-Type": "application/manifest+json",
-      "Cache-Control": "no-cache, no-store, must-revalidate"
+      "Cache-Control": "public, max-age=3600, s-maxage=3600"
     }
   });
 }

@@ -28,6 +28,8 @@ const caveat = Caveat({
   variable: "--font-caveat"
 });
 
+import { ServiceWorkerRegister } from "@/components/ServiceWorkerRegister";
+
 export default function RootLayout({
   children,
 }: Readonly<{
@@ -39,6 +41,7 @@ export default function RootLayout({
         <Providers>
           {children}
         </Providers>
+        <ServiceWorkerRegister />
       </body>
     </html>
   );
