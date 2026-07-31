@@ -225,7 +225,7 @@ export default function EditBusinessPage({ params }: { params: Promise<{ id: str
               <div style={{ flex: 1 }}>
                 <label className="btn-secondary" style={{ display: "inline-flex", alignItems: "center", gap: "0.5rem", cursor: "pointer" }}>
                   <UploadCloud size={18} /> {uploading.logo ? "Yükleniyor..." : "Logo Seç ve Yükle"}
-                  <input type="file" accept=".svg, image/svg+xml" style={{ display: "none" }} onChange={(e) => handleUpload(e, "logo")} disabled={uploading.logo} />
+                  <input type="file" accept=".png, image/png" style={{ display: "none" }} onChange={(e) => handleUpload(e, "logo")} disabled={uploading.logo} />
                 </label>
               </div>
             </div>

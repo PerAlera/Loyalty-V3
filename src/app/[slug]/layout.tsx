@@ -13,6 +13,11 @@ export async function generateMetadata({ params }: { params: Promise<{ slug: str
 
   return {
     title: business.name,
+    manifest: `/api/manifest?slug=${slug}`,
+    icons: {
+      apple: business.logo || "/Peralera-Logo.png",
+      icon: business.logo || "/Peralera-Logo.png"
+    }
   };
 }
 

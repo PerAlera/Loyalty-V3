@@ -1,24 +1,43 @@
 import { NextResponse } from 'next/server';
+import prisma from "@/lib/prisma";
 
-export async function GET() {
+export async function GET(request: Request) {
+  const { searchParams } = new URL(request.url);
+  const slug = searchParams.get('slug');
+
+  let name = "Peralera";
+  let iconUrl = "/Peralera-Logo.png";
+
+  if (slug) {
+    const business = await prisma.business.findUnique({
+      where: { slug }
+    });
+    if (business) {
+      name = business.name;
+      if (business.logo) {
+        iconUrl = business.logo;
+      }
+    }
+  }
+
   const manifest = {
-    name: "Peralera",
-    short_name: "Peralera",
-    description: "Peralera Sadakat Sistemi",
-    start_url: "/",
-    scope: "/",
-    id: "/",
+    name: name,
+    short_name: name,
+    description: `${name} Sadakat Sistemi`,
+    start_url: slug ? `/${slug}` : "/",
+    scope: slug ? `/${slug}` : "/",
+    id: slug ? `/${slug}` : "/",
     display: "standalone",
     background_color: "#ffffff",
     theme_color: "#654321",
     icons: [
       {
-        src: "/Peralera-Logo.png",
+        src: iconUrl,
         sizes: "192x192",
         type: "image/png"
       },
       {
-        src: "/Peralera-Logo.png",
+        src: iconUrl,
         sizes: "512x512",
         type: "image/png"
       }
