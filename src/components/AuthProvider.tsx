@@ -1,10 +1,13 @@
 "use client";
 import React, { createContext, useContext, useEffect, useState } from "react";
 import { createClient } from "@/lib/supabase-client";
+import { getUserSessionAction } from "@/app/actions/auth";
+
+export type Role = "SUPER_ADMIN" | "ADMIN" | "CASHIER" | "CUSTOMER";
 
 type User = {
   id: string;
-  role: string;
+  role: Role;
   name: string;
   surname: string;
   phone: string;
@@ -31,15 +34,16 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
       }
       
       try {
-        const res = await fetch(`/api/auth/session?t=${Date.now()}`, { cache: "no-store" });
-        if (res.ok) {
-          const data = await res.json();
-          if (data.session) {
-            setSession({ data: data.session, status: "authenticated" });
-          } else {
-            setSession({ data: null, status: "unauthenticated" });
-          }
+        const sessionData = await getUserSessionAction();
+        if (sessionData) {
+          setSession({ data: sessionData, status: "authenticated" });
         } else {
+          console.log("[AuthProvider] Server action returned null session despite valid supaSession.");
+          // Eğer Server Action null dönerse, ancak Supabase session varsa
+          // Muhtemelen Prisma'da kullanıcı henüz hazır değil veya cookie tam eşleşmedi.
+          // Kullanıcıyı hemen "unauthenticated" yapıp giriş sayfasına atmayalım,
+          // sadece Prisma rolleri gelmediği için data.session = null olsun ama status unauthenticated olmasın?
+          // Hayır, RoleGuard role bekliyor.
           setSession({ data: null, status: "unauthenticated" });
         }
       } catch (err) {

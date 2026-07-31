@@ -6,6 +6,7 @@ export async function getServerSession() {
   const { data: { session }, error } = await supabase.auth.getSession();
   
   if (error || !session?.user) {
+    console.log("[getServerSession] No Supabase session:", { error, hasUser: !!session?.user });
     return null;
   }
   
@@ -14,7 +15,10 @@ export async function getServerSession() {
     where: { id: session.user.id }
   });
   
-  if (!user) return null;
+  if (!user) {
+    console.log("[getServerSession] User not found in Prisma:", session.user.id);
+    return null;
+  }
   
   return {
     user: {
