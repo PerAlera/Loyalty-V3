@@ -28,8 +28,8 @@ self.addEventListener('notificationclick', function(event) {
   );
 });
 
-const CACHE_NAME = 'peralera-offline-v1';
-const OFFLINE_URL = '/';
+const CACHE_NAME = 'peralera-offline-v2';
+const OFFLINE_URL = '/offline.html';
 
 self.addEventListener('install', (event) => {
   event.waitUntil(
