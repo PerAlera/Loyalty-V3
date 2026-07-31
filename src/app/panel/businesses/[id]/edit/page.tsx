@@ -23,6 +23,7 @@ export default function EditBusinessPage({ params }: { params: Promise<{ id: str
     foodMascot: "",
     isFoodEnabled: true
   });
+  const [isActive, setIsActive] = useState(true);
 
   useEffect(() => {
     const fetchBusiness = async () => {
@@ -39,6 +40,7 @@ export default function EditBusinessPage({ params }: { params: Promise<{ id: str
             foodMascot: data.business.foodMascot || "",
             isFoodEnabled: data.business.isFoodEnabled ?? true
           });
+          setIsActive(data.business.isActive ?? true);
         }
       } catch (err) {
         console.error(err);
@@ -106,7 +108,7 @@ export default function EditBusinessPage({ params }: { params: Promise<{ id: str
   };
 
   const handleDelete = async () => {
-    if (!window.confirm("Bu işletmeyi kapatmak istediğinize emin misiniz? İşletmenin bağlantısı kalıcı olarak ulaşılamaz hale gelecektir!")) {
+    if (!window.confirm("Bu işletmeyi kapatmak istediğinize emin misiniz? İşletmenin bağlantısı geçici olarak ulaşılamaz hale gelecektir.")) {
       return;
     }
 
@@ -118,10 +120,70 @@ export default function EditBusinessPage({ params }: { params: Promise<{ id: str
 
       if (res.ok) {
         alert("İşletme başarıyla kapatıldı.");
-        router.push("/panel");
+        setIsActive(false);
       } else {
         const data = await res.json();
         alert(data.error || "Kapatma sırasında bir hata oluştu.");
+      }
+    } catch (err) {
+      console.error(err);
+      alert("Bağlantı hatası.");
+    }
+    setSaving(false);
+  };
+
+  const handleRestore = async () => {
+    if (!window.confirm("Bu işletmeyi tekrar aktif hale getirmek istediğinize emin misiniz?")) {
+      return;
+    }
+
+    setSaving(true);
+    try {
+      const res = await fetch(`/api/super-admin/businesses/${businessId}`, {
+        method: "PATCH",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ action: "RESTORE" })
+      });
+
+      if (res.ok) {
+        const data = await res.json();
+        alert(`İşletme başarıyla tekrar aktif edildi. Yeni bağlantı: ${data.slug}`);
+        setIsActive(true);
+        setFormData({ ...formData, slug: data.slug });
+      } else {
+        const data = await res.json();
+        alert(data.error || "Açma sırasında bir hata oluştu.");
+      }
+    } catch (err) {
+      console.error(err);
+      alert("Bağlantı hatası.");
+    }
+    setSaving(false);
+  };
+
+  const handlePermanentDelete = async () => {
+    if (!window.confirm("DİKKAT: Bu işletmeyi KALICI OLARAK silmek üzeresiniz! Müşteriler, cüzdanlar ve tüm geçmiş veriler geri döndürülemez şekilde silinecektir. Devam etmek istiyor musunuz?")) {
+      return;
+    }
+
+    const confirmText = window.prompt("İşlemi onaylamak için 'SİL' yazın:");
+    if (confirmText !== "SİL") {
+      alert("İşlem iptal edildi.");
+      return;
+    }
+
+    setSaving(true);
+    try {
+      const res = await fetch(`/api/super-admin/businesses/${businessId}?action=permanent`, {
+        method: "DELETE"
+      });
+
+      if (res.ok) {
+        alert("İşletme kalıcı olarak silindi.");
+        router.push("/panel");
+      } else {
+        const data = await res.json();
+        alert(data.error || "Silme sırasında bir hata oluştu.");
         setSaving(false);
       }
     } catch (err) {
@@ -307,29 +369,62 @@ export default function EditBusinessPage({ params }: { params: Promise<{ id: str
 
       <div className="surface-card" style={{ marginTop: "2rem", border: "1px solid rgba(220, 38, 38, 0.2)", backgroundColor: "rgba(220, 38, 38, 0.02)" }}>
         <h2 style={{ fontSize: "1.125rem", margin: "0 0 1rem 0", color: "#dc2626" }}>Tehlikeli Bölge</h2>
-        <p style={{ fontSize: "0.875rem", color: "var(--text-secondary)", marginBottom: "1.5rem" }}>
-          Bu işletmeyi kapattığınızda artık bağlantısına ulaşılamayacak ve sistemde aktif olarak görünmeyecektir. Bu işlem geri alınamaz (sadece veritabanında geçmiş kayıt olarak tutulur).
-        </p>
-        <button 
-          type="button" 
-          onClick={handleDelete} 
-          disabled={saving}
-          style={{ 
-            display: "flex", 
-            justifyContent: "center", 
-            alignItems: "center", 
-            gap: "0.5rem", 
-            backgroundColor: "#dc2626", 
-            color: "white", 
-            border: "none", 
-            padding: "0.75rem 1.5rem", 
-            borderRadius: "0.5rem", 
-            cursor: saving ? "not-allowed" : "pointer",
-            fontWeight: "bold"
-          }}
-        >
-          <Trash2 size={20} /> İşletmeyi Kapat
-        </button>
+        
+        {isActive ? (
+          <>
+            <p style={{ fontSize: "0.875rem", color: "var(--text-secondary)", marginBottom: "1.5rem" }}>
+              Bu işletmeyi kapattığınızda artık bağlantısına ulaşılamayacak ve sistemde aktif olarak görünmeyecektir. İstediğiniz zaman geri açabilirsiniz.
+            </p>
+            <button 
+              type="button" 
+              onClick={handleDelete} 
+              disabled={saving}
+              style={{ 
+                display: "flex", justifyContent: "center", alignItems: "center", gap: "0.5rem", 
+                backgroundColor: "var(--bg-secondary)", color: "var(--text-primary)", border: "1px solid var(--border-color)", 
+                padding: "0.75rem 1.5rem", borderRadius: "0.5rem", cursor: saving ? "not-allowed" : "pointer", fontWeight: "bold", width: "100%", marginBottom: "1rem"
+              }}
+            >
+              <Store size={20} /> İşletmeyi Dondur (Kapat)
+            </button>
+          </>
+        ) : (
+          <>
+            <p style={{ fontSize: "0.875rem", color: "var(--text-secondary)", marginBottom: "1.5rem" }}>
+              Bu işletme şu an kapalı durumda. Tekrar aktif hale getirerek müşterilerin erişimini sağlayabilirsiniz.
+            </p>
+            <button 
+              type="button" 
+              onClick={handleRestore} 
+              disabled={saving}
+              style={{ 
+                display: "flex", justifyContent: "center", alignItems: "center", gap: "0.5rem", 
+                backgroundColor: "var(--primary)", color: "white", border: "none", 
+                padding: "0.75rem 1.5rem", borderRadius: "0.5rem", cursor: saving ? "not-allowed" : "pointer", fontWeight: "bold", width: "100%", marginBottom: "1rem"
+              }}
+            >
+              <Store size={20} /> İşletmeyi Geri Aç (Aktifleştir)
+            </button>
+          </>
+        )}
+
+        <div style={{ borderTop: "1px solid rgba(220,38,38,0.2)", margin: "1.5rem 0", paddingTop: "1.5rem" }}>
+          <p style={{ fontSize: "0.875rem", color: "var(--text-secondary)", marginBottom: "1.5rem" }}>
+            Bu işletmeyi kalıcı olarak sildiğinizde, içerisindeki tüm müşteriler, cüzdanlar ve işlem geçmişi veritabanından tamamen silinecektir. Bu işlem GERİ ALINAMAZ.
+          </p>
+          <button 
+            type="button" 
+            onClick={handlePermanentDelete} 
+            disabled={saving}
+            style={{ 
+              display: "flex", justifyContent: "center", alignItems: "center", gap: "0.5rem", 
+              backgroundColor: "#dc2626", color: "white", border: "none", 
+              padding: "0.75rem 1.5rem", borderRadius: "0.5rem", cursor: saving ? "not-allowed" : "pointer", fontWeight: "bold", width: "100%"
+            }}
+          >
+            <Trash2 size={20} /> İşletmeyi KALICI Olarak Sil
+          </button>
+        </div>
       </div>
     </div>
   );
