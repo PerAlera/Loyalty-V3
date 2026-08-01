@@ -45,7 +45,7 @@ const PainPoints = () => {
 
         {/* Right: Solution Box */}
         <div className="md:col-span-2 p-10 pt-16 rounded-3xl flex flex-col justify-between relative shadow-xl bg-gray-50 border border-gray-100">
-          <div className="absolute top-6 left-6 bg-[var(--primary-color)] text-white p-2.5 rounded-full shadow-md">
+          <div className="absolute top-6 right-6 bg-[var(--primary-color)] text-white p-2.5 rounded-full shadow-md">
             <Bell className="w-6 h-6" />
           </div>
           

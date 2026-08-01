@@ -7,11 +7,11 @@ const Header = () => {
   return (
     <header className="header container">
       <div className="header-logo">
-        <img src="/peralera-logo.svg" alt="PerAlera Logo" className="logo-icon" style={{ width: '48px', height: 'auto', marginRight: '12px' }} />
-        <span className="logo-text">PerAlera</span>
+        <img src="/peralera-logo.svg" alt="PerAlera Logo" className="logo-icon" style={{ width: '64px', height: 'auto', marginRight: '12px' }} />
+        <span className="logo-text text-2xl">PerAlera</span>
       </div>
       <nav className="hidden md:flex">
-        <ul className="flex flex-row items-center gap-6 text-sm font-medium text-gray-700">
+        <ul className="flex flex-row items-center gap-8 text-base font-bold text-black list-none m-0 p-0">
           <li><Link href="/" className="hover:text-[var(--primary-color)] transition-colors">Ana Sayfa</Link></li>
           <li><Link href="#features" className="hover:text-[var(--primary-color)] transition-colors">Özellikler</Link></li>
           <li><Link href="#how-it-works" className="hover:text-[var(--primary-color)] transition-colors">Nasıl Çalışır?</Link></li>

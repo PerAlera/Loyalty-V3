@@ -23,7 +23,6 @@ const Pricing = () => {
     },
     {
       name: "9 Ay Paket",
-      badge: "AVANTAJLI",
       oldPrice: "16.200 TL",
       price: "15.300 TL",
       period: "/ 9 Ay",
@@ -35,7 +34,7 @@ const Pricing = () => {
         "Kampanya Yönetimi",
         "Teknik Destek"
       ],
-      isPopular: true,
+      isPopular: false,
       buttonText: "Bu Paketi Seç"
     },
     {

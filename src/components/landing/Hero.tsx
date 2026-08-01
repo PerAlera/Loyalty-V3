@@ -6,13 +6,13 @@ import { Smartphone, CheckCircle } from 'lucide-react';
 
 const Hero = () => {
   return (
-    <section className="hero section container pt-24 pb-12 flex flex-col lg:flex-row items-center gap-12 relative overflow-hidden">
+    <section className="hero section container pt-24 pb-12 grid grid-cols-1 md:grid-cols-2 items-center gap-12 relative overflow-hidden w-full max-w-7xl mx-auto">
       
       {/* Background Glow */}
       <div className="absolute top-1/2 left-0 -translate-y-1/2 w-[600px] h-[600px] bg-[var(--primary-color)] opacity-[0.03] blur-[100px] rounded-full pointer-events-none -z-10"></div>
 
       {/* Left Content */}
-      <div className="hero-content lg:w-1/2 flex flex-col justify-center text-left fade-in-up z-10 w-full">
+      <div className="hero-content flex flex-col justify-center text-left fade-in-up z-10 w-full">
         <h1 className="hero-title text-5xl lg:text-6xl font-extrabold mb-6 tracking-tight text-gray-900 leading-tight">
           Müşterilerinizi <span className="text-[var(--primary-color)]">Sadıklaştırın</span>,<br />
           İşletmenizi Büyütün!
@@ -42,7 +42,7 @@ const Hero = () => {
       </div>
       
       {/* Right Visual (Using provided image) */}
-      <div className="hero-visual lg:w-1/2 w-full fade-in-up relative z-10" style={{ animationDelay: '0.3s' }}>
+      <div className="hero-visual w-full fade-in-up relative z-10" style={{ animationDelay: '0.3s' }}>
         <div className="relative rounded-3xl overflow-hidden shadow-2xl bg-white border border-gray-100 transform hover:scale-[1.02] transition-transform duration-500">
           <img 
             src="/hero-composition.jpg" 
