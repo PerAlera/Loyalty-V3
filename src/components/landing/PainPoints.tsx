@@ -12,10 +12,10 @@ const PainPoints = () => {
         </p>
       </div>
 
-      <div className="flex flex-col lg:flex-row gap-8 items-stretch fade-in-up">
+      <div className="grid grid-cols-1 md:grid-cols-5 gap-8 items-stretch fade-in-up">
         
         {/* Left: 4 Icons Grid */}
-        <div className="lg:w-3/5 grid grid-cols-2 gap-8 bg-white p-8 rounded-2xl shadow-sm border border-gray-100">
+        <div className="md:col-span-3 grid grid-cols-2 gap-8 bg-white p-8 rounded-2xl shadow-sm border border-gray-100">
           
           <div className="text-center">
             <Users className="w-10 h-10 mx-auto mb-4 text-gray-700" strokeWidth={1.5} />
@@ -44,7 +44,7 @@ const PainPoints = () => {
         </div>
 
         {/* Right: Solution Box */}
-        <div className="lg:w-2/5 p-10 pt-16 rounded-3xl flex flex-col justify-between relative shadow-xl bg-gray-50 border border-gray-100">
+        <div className="md:col-span-2 p-10 pt-16 rounded-3xl flex flex-col justify-between relative shadow-xl bg-gray-50 border border-gray-100">
           <div className="absolute top-6 left-6 bg-[var(--primary-color)] text-white p-2.5 rounded-full shadow-md">
             <Bell className="w-6 h-6" />
           </div>

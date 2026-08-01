@@ -38,7 +38,7 @@ const Features = () => {
         </p>
       </div>
 
-      <div className="grid grid-cols-1 md:grid-cols-4 gap-6 fade-in-up relative mt-12 w-full max-w-6xl mx-auto px-4">
+      <div className="flex flex-col md:flex-row justify-between items-start gap-4 lg:gap-6 fade-in-up relative mt-12 w-full max-w-6xl mx-auto px-4">
         {steps.map((step, index) => (
           <React.Fragment key={index}>
             <div className="text-center flex-1 relative z-10 px-4 group">
