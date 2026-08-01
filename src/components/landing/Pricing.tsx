@@ -64,11 +64,11 @@ const Pricing = () => {
         <p className="text-secondary">İşletmeniz için en uygun paketi seçin.</p>
       </div>
 
-      <div className="flex flex-col lg:flex-row justify-center items-stretch gap-6 fade-in-up">
+      <div className="grid grid-cols-1 md:grid-cols-3 gap-6 fade-in-up w-full max-w-6xl mx-auto px-4 items-stretch">
         {plans.map((plan, index) => (
           <div 
             key={index} 
-            className={`flex flex-col bg-white border ${plan.isPopular ? 'border-[var(--primary-color)] shadow-2xl scale-105 z-10' : 'border-gray-200 shadow-sm'} rounded-3xl p-8 relative w-full max-w-sm transition-transform duration-300`}
+            className={`flex flex-col bg-white border ${plan.isPopular ? 'border-[var(--primary-color)] shadow-2xl scale-105 z-10' : 'border-gray-200 shadow-sm'} rounded-3xl p-8 relative w-full h-full transition-transform duration-300`}
             style={{ borderColor: plan.isPopular ? 'var(--primary-color)' : '' }}
           >
             {plan.badge && (

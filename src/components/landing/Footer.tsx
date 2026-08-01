@@ -5,9 +5,9 @@ const Footer = () => {
   return (
     <footer className="footer section container py-16" style={{ backgroundColor: 'var(--primary-color)', color: 'white' }}>
       {/* Top Part */}
-      <div className="flex flex-col md:flex-row justify-between gap-12 mb-16 px-4">
+      <div className="grid grid-cols-1 md:grid-cols-12 gap-8 mb-16 px-4">
         {/* Brand */}
-        <div className="md:w-1/3">
+        <div className="md:col-span-4 lg:col-span-4">
           <div className="flex items-center mb-6">
             <img src="/peralera-logo.svg" alt="PerAlera Logo" className="w-12 h-12 mr-4 brightness-0 invert" />
             <span className="font-extrabold text-2xl text-white">PerAlera <br/><span className="text-sm font-medium text-white/70">Sadakat Sistemi</span></span>
@@ -18,7 +18,7 @@ const Footer = () => {
         </div>
 
         {/* Links */}
-        <div className="md:w-1/6">
+        <div className="md:col-span-2 lg:col-span-2">
           <h4 className="font-bold text-base mb-6 text-white">Hızlı Linkler</h4>
           <ul className="space-y-4 text-sm font-medium text-white/70">
             <li><a href="/" className="hover:text-white transition-colors">Ana Sayfa</a></li>
@@ -30,7 +30,7 @@ const Footer = () => {
         </div>
 
         {/* Packages */}
-        <div className="md:w-1/6">
+        <div className="md:col-span-2 lg:col-span-2">
           <h4 className="font-bold text-base mb-6 text-white">Paketler</h4>
           <ul className="space-y-4 text-sm font-medium text-white/70">
             <li><a href="#pricing" className="hover:text-white transition-colors">6 Ay Paket</a></li>
@@ -40,7 +40,7 @@ const Footer = () => {
         </div>
 
         {/* Contact & Socials */}
-        <div className="md:w-1/4">
+        <div className="md:col-span-4 lg:col-span-4">
           <h4 className="font-bold text-base mb-6 text-white">İletişim</h4>
           <ul className="space-y-4 text-sm font-medium text-white/70 mb-8">
             <li className="flex items-center gap-3"><Phone className="w-5 h-5 opacity-80" /> +90 553 123 45 67</li>
