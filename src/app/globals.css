@@ -1,3 +1,7 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
 :root {
   /* Renk Paleti (Jay's Cafe Design System) */
   --bg-primary: #FFFFFF; 
