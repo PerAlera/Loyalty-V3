@@ -4,15 +4,14 @@
   --font-family: 'Inter', system-ui, sans-serif;
   
   /* Modern Neutral Palette */
-  --bg-color: #FAFAFA; 
-  --text-primary: #09090B;
-  --primary-color: #493121; /* Dark Brown */
-  --secondary-color: #fcfbf9; /* Cream Background */
-  --accent-color: #7b5840; /* Lighter Brown Accent */
-  --accent-light: #f5f0eb; /* Very light brown/cream */
-  --text-primary: #1c1917; /* Dark Charcoal */
-  --text-secondary: #57534e; /* Gray/Brown */
-  --border-color: #e7e5e4;
+  --bg-color: #FFFFFF; 
+  --text-primary: #212121;
+  --primary-color: #4E342E; /* Koyu Kahve */
+  --secondary-color: #A1887F; /* Açık/Sıcak Kahve */
+  --accent-color: #E64A19; /* Kırmızımsı Turuncu */
+  --accent-light: #FBE9E7; /* Çok açık kırmızımsı turuncu */
+  --text-secondary: #757575; /* Gri */
+  --border-color: #E0E0E0;
   --success-color: #10b981;
   --error-color: #ef4444;
   --surface-color: #ffffff;

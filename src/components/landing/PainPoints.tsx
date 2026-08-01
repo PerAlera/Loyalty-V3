@@ -44,39 +44,39 @@ const PainPoints = () => {
         </div>
 
         {/* Right: Solution Box */}
-        <div className="lg:w-2/5 p-8 rounded-2xl flex flex-col justify-between relative shadow-lg" style={{ backgroundColor: 'var(--accent-light)' }}>
-          <div className="absolute top-6 right-6 bg-primary-color text-white p-2 rounded-full shadow-md" style={{ backgroundColor: 'var(--primary-color)' }}>
-            <Bell className="w-5 h-5" />
+        <div className="lg:w-2/5 p-10 pt-16 rounded-3xl flex flex-col justify-between relative shadow-xl bg-gray-50 border border-gray-100">
+          <div className="absolute top-6 left-6 bg-[var(--primary-color)] text-white p-2.5 rounded-full shadow-md">
+            <Bell className="w-6 h-6" />
           </div>
           
           <div>
-            <h3 className="text-2xl font-bold mb-6" style={{ color: 'var(--primary-color)' }}>Çözüm Peralera!</h3>
-            <ul className="space-y-4">
-              <li className="flex items-start gap-3">
-                <CheckCircle2 className="w-5 h-5 mt-0.5 flex-shrink-0" style={{ color: 'var(--primary-color)' }} />
-                <span className="text-sm font-medium" style={{ color: 'var(--text-primary)' }}>Dijital sadakat kartı ile puan yerine çekirdek sistemi</span>
+            <h3 className="text-3xl font-extrabold mb-8" style={{ color: 'var(--primary-color)' }}>Çözüm Peralera!</h3>
+            <ul className="space-y-5">
+              <li className="flex items-start gap-4">
+                <CheckCircle2 className="w-6 h-6 mt-0.5 flex-shrink-0 text-[var(--accent-color)]" />
+                <span className="text-base font-medium text-gray-800">Dijital sadakat kartı ile puan yerine çekirdek sistemi</span>
               </li>
-              <li className="flex items-start gap-3">
-                <CheckCircle2 className="w-5 h-5 mt-0.5 flex-shrink-0" style={{ color: 'var(--primary-color)' }} />
-                <span className="text-sm font-medium" style={{ color: 'var(--text-primary)' }}>QR kod ile kolay kullanım</span>
+              <li className="flex items-start gap-4">
+                <CheckCircle2 className="w-6 h-6 mt-0.5 flex-shrink-0 text-[var(--accent-color)]" />
+                <span className="text-base font-medium text-gray-800">QR kod ile kolay kullanım</span>
               </li>
-              <li className="flex items-start gap-3">
-                <CheckCircle2 className="w-5 h-5 mt-0.5 flex-shrink-0" style={{ color: 'var(--primary-color)' }} />
-                <span className="text-sm font-medium" style={{ color: 'var(--text-primary)' }}>Müşteri verilerinizi takip edin</span>
+              <li className="flex items-start gap-4">
+                <CheckCircle2 className="w-6 h-6 mt-0.5 flex-shrink-0 text-[var(--accent-color)]" />
+                <span className="text-base font-medium text-gray-800">Müşteri verilerinizi takip edin</span>
               </li>
-              <li className="flex items-start gap-3">
-                <CheckCircle2 className="w-5 h-5 mt-0.5 flex-shrink-0" style={{ color: 'var(--primary-color)' }} />
-                <span className="text-sm font-medium" style={{ color: 'var(--text-primary)' }}>İnaktif müşterileri tespit edin ve tek tıkla tarayıcı bildirimi göndererek kafenize geri çağırın</span>
+              <li className="flex items-start gap-4">
+                <CheckCircle2 className="w-6 h-6 mt-0.5 flex-shrink-0 text-[var(--accent-color)]" />
+                <span className="text-base font-medium text-gray-800">İnaktif müşterileri tespit edin ve tek tıkla tarayıcı bildirimi göndererek kafenize geri çağırın</span>
               </li>
-              <li className="flex items-start gap-3">
-                <CheckCircle2 className="w-5 h-5 mt-0.5 flex-shrink-0" style={{ color: 'var(--primary-color)' }} />
-                <span className="text-sm font-medium" style={{ color: 'var(--text-primary)' }}>Özel kampanya ve duyurular oluşturun</span>
+              <li className="flex items-start gap-4">
+                <CheckCircle2 className="w-6 h-6 mt-0.5 flex-shrink-0 text-[var(--accent-color)]" />
+                <span className="text-base font-medium text-gray-800">Özel kampanya ve duyurular oluşturun</span>
               </li>
             </ul>
           </div>
           
-          <div className="mt-8">
-            <Link href="#features" className="btn btn-primary w-full shadow-md text-sm">Tüm Özellikleri İncele</Link>
+          <div className="mt-10">
+            <Link href="#features" className="btn bg-[var(--primary-color)] text-white hover:bg-[var(--primary-hover)] w-full py-4 text-lg shadow-lg">Tüm Özellikleri İncele</Link>
           </div>
         </div>
         

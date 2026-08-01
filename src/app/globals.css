@@ -5,24 +5,27 @@
 :root {
   /* Renk Paleti (Jay's Cafe Design System) */
   --bg-primary: #FFFFFF; 
-  --bg-secondary: #FFFFFF;
-  --text-primary: #000000; 
-  --text-secondary: #4A4A4A; 
+  --bg-secondary: #F5F5F5;
+  --text-primary: #212121; 
+  --text-secondary: #757575; 
   
-  --primary: #654321; /* Koyu Kahve (Ana buton) */
-  --primary-hover: #4A3015;
+  --primary: #4E342E; /* Koyu Kahve (Ana buton) */
+  --primary-hover: #3E2924;
   
-  --secondary: #C29B73; /* Karamel/Sütlü Kahve (Alt butonlar) */
-  --secondary-hover: #A8815A;
+  --secondary: #A1887F; /* Açık/Sıcak Kahve (Alt butonlar) */
+  --secondary-hover: #8D766D;
+
+  --accent: #E64A19; /* Kırmızımsı Turuncu Vurgu */
+  --accent-hover: #D84315;
   
   --success: #22C55E;
   --danger: #EF4444;
   --warning: #F59E0B;
   
-  --border-color: #E2E8F0;
+  --border-color: #E0E0E0;
   
   /* Glassmorphism Ayarları (İptal - Düz Modern UI) */
-  --surface-shadow: 0 4px 24px -4px rgba(15, 23, 42, 0.05);
+  --surface-shadow: 0 4px 24px -4px rgba(78, 52, 46, 0.05);
 }
 
 @media (prefers-color-scheme: dark) {

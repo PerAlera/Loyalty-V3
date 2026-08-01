@@ -38,22 +38,22 @@ const Features = () => {
         </p>
       </div>
 
-      <div className="flex flex-col md:flex-row justify-between items-start gap-4 fade-in-up relative">
+      <div className="flex flex-col md:flex-row justify-between items-start gap-6 fade-in-up relative mt-12">
         {steps.map((step, index) => (
           <React.Fragment key={index}>
-            <div className="text-center flex-1 relative z-10 px-4">
-              <div className="relative inline-block">
-                <div className="w-6 h-6 rounded-full flex items-center justify-center text-xs font-bold absolute -top-3 -left-3 shadow-sm" style={{ backgroundColor: 'var(--accent-light)', color: 'var(--primary-color)' }}>
+            <div className="text-center flex-1 relative z-10 px-4 group">
+              <div className="relative inline-flex items-center justify-center w-20 h-20 bg-gray-50 rounded-2xl mb-6 shadow-sm group-hover:shadow-md transition-shadow">
+                <div className="w-8 h-8 rounded-full flex items-center justify-center text-sm font-bold absolute -top-3 -right-3 shadow-md bg-[var(--accent-color)] text-white ring-4 ring-white">
                   {step.number}
                 </div>
                 {step.icon}
               </div>
-              <h4 className="font-bold text-sm mb-2 mt-2" style={{ color: 'var(--primary-color)' }}>{step.title}</h4>
-              <p className="text-xs text-gray-500">{step.desc}</p>
+              <h4 className="font-extrabold text-lg mb-3" style={{ color: 'var(--primary-color)' }}>{step.title}</h4>
+              <p className="text-sm text-gray-500 leading-relaxed">{step.desc}</p>
             </div>
             {index < steps.length - 1 && (
-              <div className="hidden md:flex items-center justify-center h-24 text-gray-300">
-                <ArrowRight className="w-6 h-6" />
+              <div className="hidden md:flex items-center justify-center h-20 text-gray-300">
+                <ArrowRight className="w-8 h-8" />
               </div>
             )}
           </React.Fragment>
