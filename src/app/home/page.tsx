@@ -3,9 +3,8 @@ import Header from '@/components/landing/Header';
 import Hero from '@/components/landing/Hero';
 import PainPoints from '@/components/landing/PainPoints';
 import Features from '@/components/landing/Features';
-import DashboardFeature from '@/components/landing/DashboardFeature';
-import AppFeature from '@/components/landing/AppFeature';
-import Testimonials from '@/components/landing/Testimonials';
+import Stats from '@/components/landing/Stats';
+import Pricing from '@/components/landing/Pricing';
 import FAQ from '@/components/landing/FAQ';
 import CTA from '@/components/landing/CTA';
 import Footer from '@/components/landing/Footer';
@@ -19,10 +18,9 @@ export default function HomeLandingPage() {
         <main>
           <Hero />
           <PainPoints />
-          <DashboardFeature />
-          <AppFeature />
           <Features />
-          <Testimonials />
+          <Stats />
+          <Pricing />
           <FAQ />
           <CTA />
         </main>

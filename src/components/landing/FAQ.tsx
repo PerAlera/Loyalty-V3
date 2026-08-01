@@ -30,25 +30,24 @@ const FAQ = () => {
   ];
 
   return (
-    <section id="faq" className="faq section container">
+    <section id="faq" className="faq section container bg-secondary py-16">
       <div className="text-center fade-in-up mb-12">
-        <h2 className="text-gradient">Sıkça Sorulan Sorular</h2>
-        <p className="text-secondary mt-4">Aklınıza takılan tüm soruların cevapları burada.</p>
+        <h2 className="text-3xl font-extrabold mb-2" style={{ color: 'var(--primary-color)' }}>Sıkça Sorulan Sorular</h2>
       </div>
 
-      <div className="faq-container fade-in-up mx-auto max-w-3xl">
+      <div className="grid grid-cols-1 md:grid-cols-2 gap-x-8 gap-y-4 fade-in-up mx-auto max-w-4xl">
         {faqs.map((faq, index) => (
           <div 
             key={index} 
-            className={`faq-item ${openIndex === index ? 'active' : ''}`}
+            className="border-b border-gray-200 py-4 cursor-pointer"
             onClick={() => setOpenIndex(openIndex === index ? null : index)}
           >
-            <div className="faq-question">
-              <h4 className="font-bold text-lg">{faq.question}</h4>
-              <ChevronDown className={`w-5 h-5 transition-transform ${openIndex === index ? 'rotate-180' : ''}`} />
+            <div className="flex justify-between items-center">
+              <h4 className="font-bold text-sm text-gray-800">{faq.question}</h4>
+              <span className="text-gray-400 font-bold ml-4">{openIndex === index ? '-' : '+'}</span>
             </div>
-            <div className={`faq-answer ${openIndex === index ? 'block' : 'hidden'}`}>
-              <p className="text-secondary mt-4 leading-relaxed">{faq.answer}</p>
+            <div className={`mt-3 text-xs text-gray-500 leading-relaxed ${openIndex === index ? 'block' : 'hidden'}`}>
+              <p>{faq.answer}</p>
             </div>
           </div>
         ))}
