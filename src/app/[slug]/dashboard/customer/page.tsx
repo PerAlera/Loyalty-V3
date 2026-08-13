@@ -10,7 +10,7 @@ import { useRouter } from "next/navigation";
 import { Scanner } from "@yudiel/react-qr-scanner";
 import { QRCodeSVG } from "qrcode.react";
 
-type ModalType = "NONE" | "SCAN" | "REDEEM" | "CAMPAIGNS" | "SUCCESS" | "NOTIFICATIONS" | "INSTALL_PWA";
+type ModalType = "NONE" | "SCAN" | "REDEEM" | "CAMPAIGNS" | "SUCCESS" | "SUCCESS_WITH_SURVEY" | "NOTIFICATIONS" | "INSTALL_PWA";
 
 export default function CustomerHome() {
   const { data: session } = useSession();
@@ -29,6 +29,7 @@ export default function CustomerHome() {
   // Modal states
   const [modalType, setModalType] = useState<ModalType>("NONE");
   const [successMessage, setSuccessMessage] = useState("");
+  const [isNewUser, setIsNewUser] = useState(false);
   const [redeemToken, setRedeemToken] = useState<string | null>(null);
   const [redeemType, setRedeemType] = useState<"COFFEE" | "FOOD" | null>(null);
   const [activeTab, setActiveTab] = useState<"COFFEE" | "FOOD">("COFFEE");
@@ -196,12 +197,48 @@ export default function CustomerHome() {
     }
   };
 
-  const showSuccess = (msg: string) => {
+  const showSuccess = (msg: string, userIsNew?: boolean) => {
     setSuccessMessage(msg);
-    setModalType("SUCCESS");
-    setTimeout(() => {
-      closeModal();
-    }, 2500);
+    if (userIsNew !== undefined) setIsNewUser(userIsNew);
+    
+    let lastSurveyDate = "";
+    const today = new Date().toISOString().split('T')[0];
+    if (typeof window !== "undefined") {
+      lastSurveyDate = localStorage.getItem("lastSurveyDate") || "";
+    }
+
+    // if userIsNew is defined, it means this was an earn scan (not redeem)
+    // we show survey if we haven't shown it today
+    if (userIsNew !== undefined && lastSurveyDate !== today) {
+      if (typeof window !== "undefined") localStorage.setItem("lastSurveyDate", today);
+      setModalType("SUCCESS_WITH_SURVEY");
+      // DO NOT set timeout to close
+    } else {
+      setModalType("SUCCESS");
+      setTimeout(() => {
+        closeModal();
+      }, 2500);
+    }
+  };
+
+  const closeSurvey = async () => {
+    // Fire and forget
+    fetch("/api/customer/survey", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ skipped: true, isNewUser })
+    }).catch(() => {});
+    closeModal();
+  };
+
+  const submitSurvey = async (answer: string) => {
+    // Fire and forget
+    fetch("/api/customer/survey", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ answer, skipped: false, isNewUser })
+    }).catch(() => {});
+    closeModal();
   };
 
   const openNotifications = () => {
@@ -239,7 +276,7 @@ export default function CustomerHome() {
           foodPoints: data.newFoodPoints,
           foodRewards: data.newFoodRewards
         });
-        showSuccess(data.message || "Puan Başarıyla Eklendi!");
+        showSuccess(data.message || "Puan Başarıyla Eklendi!", data.isNewUser);
       } else {
         alert(data.error || "Hata oluştu.");
       }
@@ -618,7 +655,14 @@ export default function CustomerHome() {
           display: "flex",
           justifyContent: "center",
           alignItems: "center"
-        }}>
+        }}
+        onClick={(e) => {
+          if (e.target === e.currentTarget) {
+            if (modalType === "SUCCESS_WITH_SURVEY") closeSurvey();
+            else if (modalType !== "SUCCESS") closeModal();
+          }
+        }}
+        >
           
           <div className="fade-in" style={{
             width: "calc(100% - 60px)",
@@ -636,7 +680,10 @@ export default function CustomerHome() {
           }}>
             
             {modalType !== "SUCCESS" && (
-              <button onClick={closeModal} style={{ position: "absolute", top: "0.75rem", right: "0.75rem", background: "none", border: "none", cursor: "pointer" }}>
+              <button 
+                onClick={modalType === "SUCCESS_WITH_SURVEY" ? closeSurvey : closeModal} 
+                style={{ position: "absolute", top: "0.75rem", right: "0.75rem", background: "none", border: "none", cursor: "pointer" }}
+              >
                 <X size={24} color="#000" />
               </button>
             )}
@@ -790,6 +837,51 @@ export default function CustomerHome() {
                 <h2 className="font-caveat" style={{ fontSize: "1.8rem", color: "var(--success)", lineHeight: 1.2 }}>
                   {successMessage}
                 </h2>
+              </>
+            )}
+
+            {modalType === "SUCCESS_WITH_SURVEY" && (
+              <>
+                <div style={{
+                  width: "60px", height: "60px", borderRadius: "50%",
+                  backgroundColor: "var(--success)", display: "flex",
+                  alignItems: "center", justifyContent: "center",
+                  marginBottom: "1rem", animation: "fadeIn 0.5s ease-out"
+                }}>
+                  <Check size={32} color="white" strokeWidth={4} />
+                </div>
+                <h2 className="font-caveat" style={{ fontSize: "1.5rem", color: "var(--success)", lineHeight: 1.2 }}>
+                  {successMessage}
+                </h2>
+                
+                <hr style={{ width: "100%", margin: "1.5rem 0", borderTop: "1px solid var(--border-color)" }} />
+                
+                {isNewUser ? (
+                  <div style={{ display: "flex", flexDirection: "column", gap: "1rem", width: "100%" }}>
+                    <h3 style={{ fontSize: "1.1rem", fontWeight: "bold", margin: 0 }}>Bizi yeni mi keşfettiniz?</h3>
+                    <div style={{ display: "flex", flexDirection: "column", gap: "0.75rem" }}>
+                      <button onClick={() => submitSurvey("İlk kez geliyorum")} className="btn-secondary" style={{ width: "100%", padding: "0.75rem", fontSize: "0.95rem", borderColor: "var(--primary)", color: "var(--primary)" }}>[İlk kez geliyorum]</button>
+                      <button onClick={() => submitSurvey("Daha önce gelmiştim")} className="btn-secondary" style={{ width: "100%", padding: "0.75rem", fontSize: "0.95rem" }}>[Daha önce gelmiştim]</button>
+                    </div>
+                  </div>
+                ) : (
+                  <div style={{ display: "flex", flexDirection: "column", gap: "1rem", width: "100%", alignItems: "center" }}>
+                    <h3 style={{ fontSize: "1.1rem", fontWeight: "bold", margin: 0 }}>Bugünkü deneyimini nasıl puanlarsın?</h3>
+                    <div style={{ display: "flex", gap: "0.5rem" }}>
+                      {[1, 2, 3, 4, 5].map((star) => (
+                        <button 
+                          key={star} 
+                          onClick={() => submitSurvey(star.toString())}
+                          style={{ background: "none", border: "none", cursor: "pointer", padding: "0.25rem", color: "#F59E0B" }}
+                        >
+                          <svg width="32" height="32" viewBox="0 0 24 24" fill="currentColor" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                            <polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"></polygon>
+                          </svg>
+                        </button>
+                      ))}
+                    </div>
+                  </div>
+                )}
               </>
             )}
 

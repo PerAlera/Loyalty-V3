@@ -20,6 +20,7 @@ model Business {
   users         User[]
   settings      BusinessSettings?
   announcements Announcement[]
+  surveyResponses SurveyResponse[]
   createdAt     DateTime       @default(now())
   updatedAt     DateTime       @updatedAt
   isActive      Boolean        @default(true)
@@ -47,6 +48,7 @@ model User {
   qrTokens     QrToken[]
   pushSubscriptions PushSubscription[]
   targetedAnnouncements Announcement[] @relation("AnnouncementToUser")
+  surveyResponses SurveyResponse[]
 
   @@unique([phone, businessId])
 }
@@ -123,6 +125,7 @@ model QrToken {
   type        QrType
   productType ProductType  @default(COFFEE)
   beans       Int?
+  foodPoints  Int?
   expiresAt   DateTime
   isUsed      Boolean      @default(false)
   createdAt   DateTime     @default(now())
@@ -136,6 +139,19 @@ enum QrType {
 enum ProductType {
   COFFEE
   FOOD
+  BOTH
+}
+
+model SurveyResponse {
+  id         String   @id @default(cuid())
+  userId     String
+  user       User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  businessId String
+  business   Business @relation(fields: [businessId], references: [id], onDelete: Cascade)
+  isNewUser  Boolean
+  answer     String?
+  skipped    Boolean  @default(false)
+  createdAt  DateTime @default(now())
 }
 
 model PushSubscription {
