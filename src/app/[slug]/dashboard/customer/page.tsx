@@ -203,14 +203,16 @@ export default function CustomerHome() {
     
     let lastSurveyDate = "";
     const today = new Date().toISOString().split('T')[0];
+    const storageKey = `lastSurveyDate_${session?.user?.id || 'guest'}`;
+    
     if (typeof window !== "undefined") {
-      lastSurveyDate = localStorage.getItem("lastSurveyDate") || "";
+      lastSurveyDate = localStorage.getItem(storageKey) || "";
     }
 
     // if userIsNew is defined, it means this was an earn scan (not redeem)
     // we show survey if we haven't shown it today
     if (userIsNew !== undefined && lastSurveyDate !== today) {
-      if (typeof window !== "undefined") localStorage.setItem("lastSurveyDate", today);
+      if (typeof window !== "undefined") localStorage.setItem(storageKey, today);
       setModalType("SUCCESS_WITH_SURVEY");
       // DO NOT set timeout to close
     } else {
