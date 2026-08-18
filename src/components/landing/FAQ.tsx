@@ -23,10 +23,7 @@ const FAQ = () => {
       question: "Birden fazla şubem ve çalışanım var. Nasıl yöneteceğim?",
       answer: "Profesyonel pakette sınırsız kasiyer yetkilendirmesi yapabilirsiniz. Her çalışan kendi şifresiyle giriş yapar ve siz yönetim panelinden hangi şubede hangi çalışanın kaç puan dağıttığını detaylıca raporlayabilirsiniz."
     },
-    {
-      question: "POS sistemim ile entegre çalışır mı?",
-      answer: "Kurumsal paketlerimizde özel POS entegrasyonu sunuyoruz. Standart paketlerimizde ise POS'tan bağımsız olarak sadece kamerayla QR okutma mantığıyla harici ve çok hızlı çalışır."
-    },
+
     {
       question: "Paket değiştirmek veya iptal etmek mümkün mü?",
       answer: "İstediğiniz zaman bir üst veya alt pakete geçiş yapabilirsiniz. Mevcut paketinizi iptal etmek isterseniz, dönem sonuna kadar kullanabilir ve sonrasında yenilemeyebilirsiniz."

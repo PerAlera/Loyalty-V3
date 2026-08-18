@@ -35,9 +35,8 @@ const Footer = () => {
           <div className="md:col-span-2 lg:col-span-2">
             <h4 className="font-bold text-lg mb-6" style={{ color: 'var(--primary-color)' }}>Paketler</h4>
             <ul className="space-y-4 text-sm font-medium text-gray-600">
-              <li><a href="#pricing" className="hover:text-[var(--accent-color)] transition-colors">6 Ay Paket</a></li>
-              <li><a href="#pricing" className="hover:text-[var(--accent-color)] transition-colors">9 Ay Paket</a></li>
-              <li><a href="#pricing" className="hover:text-[var(--accent-color)] transition-colors">12 Ay Paket</a></li>
+              <li><a href="#pricing" className="hover:text-[var(--accent-color)] transition-colors">Standart Paket</a></li>
+              <li><a href="#pricing" className="hover:text-[var(--accent-color)] transition-colors">VIP Büyüme Paketi</a></li>
             </ul>
           </div>
 
