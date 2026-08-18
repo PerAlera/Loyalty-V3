@@ -45,7 +45,7 @@ const Footer = () => {
             <h4 className="font-bold text-lg mb-6" style={{ color: 'var(--primary-color)' }}>İletişim</h4>
             <ul className="space-y-4 text-sm font-medium text-gray-600 mb-8">
               <li className="flex items-center gap-3"><Phone className="w-5 h-5 text-gray-400" /> +90 553 123 45 67</li>
-              <li className="flex items-center gap-3"><Mail className="w-5 h-5 text-gray-400" /> info@peralera.com</li>
+              <li className="flex items-center gap-3"><Mail className="w-5 h-5 text-gray-400" /> alperen@peralera.com</li>
               <li className="flex items-center gap-3"><MapPin className="w-5 h-5 text-gray-400" /> İstanbul, Türkiye</li>
             </ul>
             <div className="flex gap-4">
